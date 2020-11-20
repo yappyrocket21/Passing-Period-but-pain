@@ -444,6 +444,17 @@ input:checked + .slider:before {
 	display: none;
 }
 
+#survivalofthefittest {
+	position: fixed;
+	top: 0px;
+	right: 0px;
+	width: 100vw;
+	height: 100vh;
+	background: url('images/Anti-Vaping%20Savage.svg#svgView(preserveAspectRatio(none))');
+	background-size: 100% 100%;
+	display: none;
+}
+
 #savageroom {
 	position: fixed;
 	top: 0px;
@@ -474,6 +485,16 @@ input:checked + .slider:before {
 }
 
 #slowkidsactions {
+	position: fixed;
+	top: 0px;
+	right: 0px;
+	width: 100vw;
+	height: 100vh;
+	background: white;
+	display: none;
+}
+
+#jackinnisInvite {
 	position: fixed;
 	top: 0px;
 	right: 0px;

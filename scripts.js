@@ -26,6 +26,8 @@ var events = true; //Can the player trigger an event
 var days = 0;
 var day = 0;
 var canBeSlowed = true; //Wether or not the player can get stuck behind slow kids
+var partnership = false; //Wether or not the player has formed a partnership with Jack
+var never = false; //Wether or not the player has said "never" to jack
 
 //If the user has previously toggled the local highscore switch, set hsLocal to true
 if (localStorage.getItem('useHSL') == "true") {
@@ -81,6 +83,15 @@ function update() { //runs every ten milliseconds
 			if (isTouching(gp, document.getElementById("mulberries"))) {
 				movement = false;
 				document.getElementById("storefront").style.display = "block";
+			} else if (isTouching(gp, document.getElementById("bathroom"))) {
+				movement = false;
+				document.getElementById("survivalofthefittest").style.display = "block";
+			} else if (isTouching(gp, document.getElementById("jackinnis"))) {
+				if (!never && !partnership) { //If the player is not already in a partnership with jack and they haven't said "never to him"
+					movement = false;
+					events = false;
+					document.getElementById("jackinnisInvite").style.display = "block";
+				}
 			}
 		}
 
@@ -129,7 +140,7 @@ function update() { //runs every ten milliseconds
 						canBeSlowed = false;
 						setTimeout(function () {
 							canBeSlowed = true;
-						}, 1000); //Give the player one second to get out of the zone
+						}, 4000); //Give the player one second to get out of the zone
 					}
 				}
 			}
@@ -227,7 +238,11 @@ function startGame() {
 }
 
 function endGame() {
-
+	movement = false;
+	events = false;
+	passingperiod = false;
+	inclass = false;
+	document.getElementById("mainMenu").style.display = "block";
 }
 
 function buyPepper() {
@@ -263,6 +278,9 @@ function getSavaged(penalty) {
 		endGame();
 	} else {
 		day++;
+		if (partnership) {
+			money += 5;
+		}
 		x = 0;
 		y = 0;
 		if (Math.floor(Math.random() * 2) == 0) {
@@ -345,7 +363,7 @@ function pushThrough() {
 	document.getElementById("slowkidsactions").style.display = "none";
 	setTimeout(function () {
 		canBeSlowed = true;
-	}, 3000);
+	}, 4000);
 	popularity -= 5;
 }
 
@@ -355,7 +373,7 @@ function sellButter() {
 		document.getElementById("slowkidsactions").style.display = "none";
 		setTimeout(function () {
 			canBeSlowed = true;
-		}, 3000);
+		}, 4000);
 		butterfingers -= 1;
 		popularity += 1;
 		money += 4;
@@ -370,6 +388,66 @@ function walkBehind() {
 	document.getElementById("slowkidsactions").style.display = "none";
 	setTimeout(function () {
 		canBeSlowed = true;
-	}, 3000);
+	}, 4000);
 	time -= 30000;
+}
+
+function naturalSelection() {
+	if (Math.floor(Math.random() * 10) == 0) {
+		//10% chance of being suspended
+		alert("Mr. Savage caught you vaping! You have been suspended. Game Over.");
+		endGame();
+	} else {
+		popularity += 10;
+		time -= 20000;
+	}
+}
+
+function sellPepper() {
+	if (pepper < 1) {
+		alert("You don't have any Dr. Pepper!");
+	} else {
+		pepper -= 1;
+		money += 8;
+		time -= 15000;
+	}
+}
+
+function leaveBathroom() {
+	x -= 20;
+	document.getElementById("survivalofthefittest").style.display = "none";
+	movement = true;
+}
+
+function createPartnership() {
+	if (butterfingers > 0) {
+		butterfingers -= 1;
+		popularity -= 10;
+		time -= 10000;
+		partnership = true;
+		movement = true;
+		document.getElementById("jackinnisInvite").style.display = "none";
+		setTimeout(function () {
+			events = true;
+		}, 5000);
+	} else {
+		
+	}
+}
+
+function noJack() {
+	movement = true;
+	document.getElementById("jackinnisInvite").style.display = "none";
+	setTimeout(function () {
+		events = true;
+	}, 5000);
+}
+
+function neverJack() {
+	never = true;
+	movement = true;
+	document.getElementById("jackinnisInvite").style.display = "none";
+	setTimeout(function () {
+		events = true;
+	}, 5000);
 }
