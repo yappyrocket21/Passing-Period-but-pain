@@ -266,7 +266,7 @@ function getSavaged(penalty) {
 		x = 0;
 		y = 0;
 		if (Math.floor(Math.random() * 2) == 0) {
-			document.getElementById("sectionsDivider").innerHTML = "<h1>Passing Perriod</h1>";
+			document.getElementById("sectionsDivider").innerHTML = "<h1>Passing Period</h1>";
 			document.getElementById("sectionsDivider").style.display = "block";
 			document.getElementById("sectionsDivider").classList.remove("outro");
 			document.getElementById("sectionsDivider").classList.add("intro");
@@ -279,7 +279,7 @@ function getSavaged(penalty) {
 					passingperiod = true;
 					inclass = false;
 					movement = true;
-					time = 60;
+					time = 60000;
 				}, 1000)
 			}, 4000);
 		} else {
@@ -296,7 +296,7 @@ function getSavaged(penalty) {
 					passingperiod = false;
 					inclass = true;
 					movement = true;
-					time = 30;
+					time = 30000;
 				}, 1000)
 			}, 4000);
 		}
@@ -371,5 +371,5 @@ function walkBehind() {
 	setTimeout(function () {
 		canBeSlowed = true;
 	}, 3000);
-	time -= -30000;
+	time -= 30000;
 }

@@ -1,10 +1,10 @@
 #gamepiece {
-	background: url('https://scanuproductions.com/images/drone.png');
+	background: blue;
 	background-size: cover;
 	background-position: 2px 0px;
 	width: 2.5vw;
+	height: 2.5vw;
 	position: absolute;
-	transform: scaleX(-1);
 	z-index: -1;
 	border-radius: 15px;
 }
@@ -136,9 +136,17 @@ body {
 /* Styles that apply to all powerups */
 .functional {
 	background-size: contain;
-	background: purple;
+	background: transparent;
 	position: absolute;
 	z-index: -2;
+}
+
+/* Styles that apply to all powerups */
+.decorative {
+	background-size: contain;
+	background: purple;
+	position: absolute;
+	z-index: -3;
 }
 
 .threeD {
@@ -442,8 +450,27 @@ input:checked + .slider:before {
 	right: 0px;
 	width: 100vw;
 	height: 100vh;
-	background: white;
+	background: url('images/savageroom.png') white;
 	display: none;
+}
+
+#savageroom h2 {
+    position: absolute;
+    top: 177px;
+    left: 218px;
+	 z-index: 1;
+}
+
+#savageroom h1 {
+    color:white;
+	text-shadow: 2px 2px 2px rgba(0, 0, 0, .7)
+}
+
+#savagebubble {
+	transform: scaleX(-2.4) scaleY(-1);
+    position: absolute;
+    left: 196px;
+    top: 135px;
 }
 
 #slowkidsactions {
@@ -465,6 +492,7 @@ input:checked + .slider:before {
 	height: 20vh;
 	text-align: center;
 	z-index: 1;
+	background: purple;
 }
 
 .actionButtonsContainer button {
@@ -473,9 +501,10 @@ input:checked + .slider:before {
 }
 
 #savagepicture {
-	position: absolute;
-	bottom:calc(20vh + 20px);
-	left: 5vh;
+    position: absolute;
+    bottom: calc(20vh + 20px);
+    left: 151px;
+    width: 979px;
 }
 
 #sectionsDivider {
