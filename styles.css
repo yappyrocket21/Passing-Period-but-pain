@@ -16,7 +16,7 @@
 }
 
 body {
-	background: url("https://scanuproductions.com/images/sky.jpg");
+	background: black;
 	background-size: cover;
 	overflow: hidden;
 	cursor: url(https://scanuproductions.com/images/pointer.png) 5 5, crosshair;
@@ -467,8 +467,9 @@ input:checked + .slider:before {
 
 #savageroom h2 {
     position: absolute;
-    top: 177px;
-    left: 218px;
+	text-align: center;
+    top: 200px;
+    left: 100px;
 	 z-index: 1;
 }
 
@@ -481,7 +482,7 @@ input:checked + .slider:before {
 	transform: scaleX(-2.4) scaleY(-1);
     position: absolute;
     left: 196px;
-    top: 135px;
+    top: 175px;
 }
 
 #slowkidsactions {
