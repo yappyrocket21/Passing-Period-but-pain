@@ -11,6 +11,10 @@
 </head>
 
 <body id="game">
+	<div id="popup">
+		<div id="popupHeader">Notification<button id="closeButton" onclick="closeNotification()">&times;</button></div>
+		<div id="notificationContent">Test Notification!</div>
+	</div>
 	<iframe id="dropdown" src="https://scanuproductions.com/webtools/menu/dropdown.html"></iframe>
 	<script src="https://scanuproductions.com/webtools/menu/dropdown.js"></script>
 	<button id="openButton" onclick="openMenu()">&#8942;</button>
@@ -23,19 +27,26 @@
 		<div id="powerUpsDisplay"></div>
 	</div>
 	<div id="mainMenu">
-	<div id="topbar">
-		<img src="images/schoology.png">
-		<b>COURSES</b>
-		<b>Groups</b>
-		<b>Resources</b>
-		<b>Grades</b>
+		<div id="topbar">
+			<img src="images/schoology.png">
+			<b>COURSES</b>
+			<b>GROUPS</b>
+			<b>RESOURCES</b>
+			<b onclick="notify('*Insert Rickroll Here*')">GRADES</b>
 		</div>
-		<div style="text-align: center; margin-top: 100px;"><h1>Passing Period</h1></div>
+		<div style="text-align: center; margin-top: 100px;">
+			<h1>Passing Period</h1>
+		</div>
 		<div id="schoologyBackground">
+			<div id="gradeContainer">
+			
+			</div>
 			<h2>This activity is currently accepting submissions</h2>
 			<button class="startButton" onclick="startGame()">Start Now</button>
 			<p>You may make as many attempts as you like.</p>
 		</div>
+		<table id="results"><tr><th>Money</th><th>Popularity</th><th>Honors Chemistry Grade</th><th>Butterfingers</th><th>Dr. Pepper</th><th>Final Grade</th></tr>
+    </table>
 	</div>
 	<div id="storefront">
 		<!--<h1>Welcome to Mulberries!</h1>-->
@@ -83,48 +94,59 @@
 		</div>
 	</div>
 	<div id="sectionsDivider">
-	
+
 	</div>
 	<div id="gamepiece">
 		<br>
 
 	</div>
-	<div class="obstacle" style="top: 0px; left: 0px; width: 40vw; height: 30vh; background: url('images/stem.svg#svgView(preserveAspectRatio(none))'); background-size: 100% 100%; background-repeat: no-repeat">Construction Site (Stem Building)</div>
-	<div class="obstacle" style="top: 0px; left: 45vw; width: 35vw; height: 25vh; background: url('images/10s.svg#svgView(preserveAspectRatio(none))'); background-size: 100% 100%; background-repeat: no-repeat">10s Building</div>
-	<div class="obstacle" style="bottom: 40vh; right: 0px; width: 10vw; height: 20vh">20s Building</div>
-	<div class="obstacle" style="bottom: 0px; right: 0px; width: 10vw; height: 30vh">20s Building</div>
-	<div class="obstacle" style="bottom: 70vh; right: 0px; width: 10vw; height: 10vh">20s Building</div>
-	<div class="obstacle" style="bottom: 35vh; left: 20vw; width: 20vw; height: 25vh">30s Building West Wall</div>
-	<div class="obstacle" style="bottom:0px; left: 20vw; width: 10vw; height: 25vh; background: url('images/hayden.svg'); background-size: 100% 100%; background-repeat: no-repeat"></div>
-	<div class="obstacle" style="bottom:0px; right: 20vw; width: 10vw; height: 60vh; background: url('images/foster.svg#svgView(preserveAspectRatio(none))'); background-size: 100% 100%; background-repeat: no-repeat">30s Building East Wall</div>
-	<div class="obstacle" style="bottom:10vh; left: 35vw; width: 1vw; height: 25vh"></div>
-	<div class="obstacle" style="bottom:0px; left: 40vw; width: 30vw; height: 10vh; background: url('images/barlin.svg#svgView(preserveAspectRatio(none))'); background-size: 100% 100%; background-repeat: no-repeat" >30s Building South Wall</div>
-	<div class="obstacle" style="bottom:20vh; left: 35vw; width: 5vw; height: 40vh"></div>
-	<div class="obstacle" style="bottom:20vh; left: 45vw; width: 20vw; height: 40vh; background: url('images/library.svg#svgView(preserveAspectRatio(none))'); background-size: 100% 100%; background-repeat: no-repeat"></div>
-	<div class="functional" style="top:0px; left: 40vw; width: 5vw; height: 10vh; background: url('images/mulberryslogo.jpg'); background-size: contain;" id="mulberries"></div>
-	<div class="functional slowkids" style="top:30vh; left: 20vw; width: 5vw; height: 10vh"></div>
-	<div class="functional slowkids" style="bottom:0px; left: 35vw; width: 5vw; height: 10vh"></div>
-	<div class="functional" style="bottom:60vh; right: 0px; width: 5vw; height: 10vh; background: url('images/savage.png') no-repeat; background-size:contain;" id="savage"></div>
-	<div class="functional" style="bottom: 30vh; right: 0px; height: 10vh; width: 5vw;" id="bathroom">The Bathroom</div>
-	<div class="functional" style="bottom: 10vh; left: 50vw; width: 5vw; height:10vh; background: url('images/jackanon.png') no-repeat; background-size:contain;" id="jackinnis"></div>
-	<div class="decorative" style="bottom:0px; left: 0px; width: 20vw; height: 70vh; background: url('images/patio.svg#svgView(preserveAspectRatio(none))'); background-size: 100% 100%; background-repeat: no-repeat"></div>
-	<div class="decorative" style="bottom:0px; left: 20vw; width: 80vw; height: 100vh; background: url('images/bricks.svg'); background-size: 50%;  background-repeat: repeat"></div>
-	<!-- <div class="decorative" style="top:0px; right: 20vw; width: 60vw; height: 40vh; background: url('images/bricks.svg'); background-size: contain"></div>
-	<div class="decorative" style="top:0px; right: 0px; width: 20vw; height: 100vh; background: url('images/bricks.svg'); background-size: contain;"></div> -->
+	<div id="mapContainer">
+		<div class="obstacle" style="bottom: 70vh; left: 0px; width: 40vw; height: 40vh; background: url('images/stem.svg#svgView(preserveAspectRatio(none))'); background-size: 100% 100%; background-repeat: no-repeat">Construction Site (Stem Building)</div>
+		<div class="obstacle" style="bottom: 75vh; left: 45vw; width: 35vw; height: 35vh; background: url('images/10s.svg#svgView(preserveAspectRatio(none))'); background-size: 100% 100%; background-repeat: no-repeat">10s Building</div>
+		<div class="obstacle" style="bottom: 40vh; left: 90vw; width: 5vw; height: 10vh;   background: url('images/brcorner.svg#svgView(preserveAspectRatio(none))'); background-size: 100% 100%; background-repeat: no-repeat">20s Building</div>
+		<div class="obstacle" style="bottom: -10vh; left: 90vw; width: 40vw; height: 20vh; background: url('images/chamberlain.svg#svgView(preserveAspectRatio(none))'); background-size: 100% 100%; background-repeat: no-repeat">20s Building</div>
+		<div class="obstacle" style="bottom: 20vh; left: 90vw; width: 5vw; height: 10vh;  background: url('images/brcorner.svg#svgView(preserveAspectRatio(none))'); background-size: 100% 100%; background-repeat: no-repeat">20s Building</div>
+		<div class="obstacle" style="bottom: 20vh; left: 95vw; width: 15vw; height: 30vh;  background: url('images/br.svg#svgView(preserveAspectRatio(none))'); background-size: 100% 100%; background-repeat: no-repeat">20s Building</div>
+		<div class="obstacle" style="bottom: 10vh; left: 115vw; width: 15vw; height: 50vh;   background: url('images/savvy.svg#svgView(preserveAspectRatio(none))'); background-size: 100% 100%; background-repeat: no-repeat">20s Building</div>
+		<div class="obstacle" style="bottom: 60vh; left: 90vw; width: 40vw; transform: scaley(-1); height: 20vh; background: url('images/chamberlain.svg#svgView(preserveAspectRatio(none))'); background-size: 100% 100%; background-repeat: no-repeat">20s Building</div>
+		<div class="obstacle" style="bottom: 35vh; left: 20vw; width: 20vw; height: 25vh;  background: url('images/genericmath.svg#svgView(preserveAspectRatio(none))'); background-size: 100% 100%; background-repeat: no-repeat;">30s Building West Wall</div>
+		<div class="obstacle" style="bottom:0px; left: 20vw; width: 10vw; height: 25vh; background: url('images/hayden.svg#svgView(preserveAspectRatio(none))'); background-size: 100% 100%; background-repeat: no-repeat"></div>
+		<div class="obstacle" style="bottom:-10vh; left: 20vw; width: 20vw; height: 10vh; background: url('images/janitorial.svg#svgView(preserveAspectRatio(none))'); background-size: 100% 100%; background-repeat: no-repeat"></div>
+		<div class="obstacle" style="bottom:-10vh; left: 70vw; width: 10vw; height: 70vh; background: url('images/foster.svg#svgView(preserveAspectRatio(none))'); background-size: 100% 100%; background-repeat: no-repeat">30s Building East Wall</div>
+		<div class="obstacle" style="bottom:10vh; left: 35vw; width: 1vw; height: 25vh"></div>
+		<div class="obstacle" style="bottom: -10vh; left: 40vw; width: 30vw; height: 20vh; background: url('images/barlin.svg#svgView(preserveAspectRatio(none))'); background-size: 100% 100%; background-repeat: no-repeat">30s Building South Wall</div>
+		<div class="obstacle" style="bottom:20vh; left: 35vw; width: 5vw; height: 15vh;  background: url('images/weirdbath.svg#svgView(preserveAspectRatio(none))'); background-size: 100% 100%; background-repeat: no-repeat"></div>
+		<div class="obstacle" style="bottom:20vh; left: 45vw; width: 20vw; height: 40vh; background: url('images/library.svg#svgView(preserveAspectRatio(none))'); background-size: 100% 100%; background-repeat: no-repeat"></div>
+		<div class="obstacle" style="bottom:-50vh; left: 0px; width: 150vw; height: 15vh; background: url('images/ivy.svg#svgView(preserveAspectRatio(none))'); background-size: 100% 100%; background-repeat: no-repeat"></div>
+		<div class="obstacle" style="bottom:-35vh; left: 0px; width: 15vw; height: 35vh; background: url('images/foodservice.svg#svgView(preserveAspectRatio(none))'); background-size: 100% 100%; background-repeat: no-repeat"></div>
+		<div class="obstacle" style="bottom:80vh; left: 90vw; width: 40vw; height: 30vh; background: url('images/ivy.svg'); background-size: 200%; background-repeat: repeat"></div>
+		<div class="obstacle" style="bottom:-10vh; left: 135vw; width: 15vw; height: 120vh; background: url('images/ivy.svg'); background-size: 800%; background-repeat: repeat"></div>
+		<div class="functional" style="bottom: 140vh; left: 145vw; width: 5vw; height: 10vh; background: url('images/mulberryslogo.jpg'); background-size: contain;  background-repeat: no-repeat;" id="mulberries"></div>
+		<div class="functional slowkids" style="bottom: 60vh; left: 20vw; width: 5vw; height: 10vh"></div>
+		<div class="functional slowkids" style="bottom:0px; left: 35vw; width: 5vw; height: 10vh"></div>
+		<div class="functional" style="bottom:30vh; left: 110vw; width: 5vw; height: 10vh; background: url('images/savage.png') no-repeat; background-size:contain;" id="savage"></div>
+		<div class="functional" style="bottom: 30vh; left: 90vw; height: 10vh; width: 5vw;" id="bathroom">The Bathroom</div>
+		<div class="functional" style="bottom: 10vh; left: 50vw; width: 5vw; height:10vh; background: url('images/jackanon.png') no-repeat; background-size:contain;" id="jackinnis"></div>
+		<div class="decorative" style="bottom:-10vh; left: 0px; width: 20vw; height: 80vh; background: url('images/patio.svg#svgView(preserveAspectRatio(none))'); background-size: 100% 100%; background-repeat: no-repeat"></div>
+		<div class="decorative" style="bottom:-10vh; left: 20vw; width: 70vw; height: 120vh; background: url('images/bricks.svg'); background-size: 50%;  background-repeat: repeat"></div>
+		<div class="decorative" style="bottom: 110vh; left: 0px; width: 150vw; height: 40vh; background: url('images/Magnolia.svg#svgView(preserveAspectRatio(none))'); background-size: 100% 100%; background-repeat: no-repeat"></div>
+		<div class="decorative" style="bottom: -35vh; left: 15vw; width: 135vw; height: 25vh; background: url('images/path.svg#svgView(preserveAspectRatio(none))'); background-size: 100% 100%; background-repeat: no-repeat"></div>
+		<div class="decorative" style="bottom:-10vh; left: 90vw; width: 40vw; height: 90vh; background: url('images/tiles.svg'); background-size: contain;"></div>
 		<div class="decorative" style="bottom:0px; left: 20vw; width: 60vw; height: 60vh; background: url('images/tiles.svg'); background-size: contain;"></div>
-	<div class="center">
-		<div id="intro" style="display: none;">
-			<video src="https://scanuproductions.com/gameIntro.mp4" id="introVideo"></video>
-			<button class="menuButton" onclick="document.getElementById('introVideo').pause();document.getElementById('intro').style.display = 'none'">Close</button>
-		</div>
-		<div id="hitMenu" style="display: none;">
-			<h1 id="whyDisplay">You Got Hit</h1>
-			<h4 style="display: inline-block; margin-right: 5px;d">Remaining Lives: </h4>
-			<h4 id="hitAliveDisplay" style="display: inline-block">1</h4><br>
-			<button class="menuButton" onclick="resumeGame(); setTimeout(resumeHit, 3000);">Continue</button><br><button class="menuButton" onclick="endGame()">End Game</button>
+		<div class="decorative" style="bottom: -10vh; left: 130vw; width: 5vw; height: 120vh; background: url('images/dirtpath.svg#svgView(preserveAspectRatio(none))'); background-size: 100% 100%; background-repeat: no-repeat"></div>
+		<div class="center">
+			<div id="intro" style="display: none;">
+				<video src="https://scanuproductions.com/gameIntro.mp4" id="introVideo"></video>
+				<button class="menuButton" onclick="document.getElementById('introVideo').pause();document.getElementById('intro').style.display = 'none'">Close</button>
+			</div>
+			<div id="hitMenu" style="display: none;">
+				<h1 id="whyDisplay">You Got Hit</h1>
+				<h4 style="display: inline-block; margin-right: 5px;d">Remaining Lives: </h4>
+				<h4 id="hitAliveDisplay" style="display: inline-block">1</h4><br>
+				<button class="menuButton" onclick="resumeGame(); setTimeout(resumeHit, 3000);">Continue</button><br><button class="menuButton" onclick="endGame()">End Game</button>
+			</div>
 		</div>
 	</div>
-
 	<style>
 
 	</style>

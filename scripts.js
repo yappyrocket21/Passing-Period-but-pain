@@ -9,12 +9,18 @@ var forwardSpeed = 0; //speed in px/ms (pixels per millisecond) to move forward 
 var backSpeed = 0; //speed in px/ms to move back (down)
 var leftSpeed = 0; //speed in px/ms to move left
 var rightSpeed = 0; //speed in px/ms to move right
+var forwardSpeedMap = 0; //speed in px/ms (pixels per millisecond) to move forward (up)
+var backSpeedMap = 0; //speed in px/ms to move back (down)
+var leftSpeedMap = 0; //speed in px/ms to move left
+var rightSpeedMap = 0; //speed in px/ms to move right
 var active = false; //if the game is active, off until game starts
 var hit = false; //if the block has been hit
 var blockSpeed = 1; //speed the blocks move, in px/ms
-var speed = 1.25; //speed of block in px/ms
+var speed = 3; //speed of block in px/ms
 var y = 0; //position of gamepiece vertically
 var x = 0; //position of gp horizontally
+var mapY = 0; //mapX
+var mapX = 0; //mapY
 var movement = false; //if movement is allowed
 var battery = 70; //Amount of battery that the drone has (0 - 70)
 var hsLocal = false; //Store highscore locally instead of on your Scanu Productions account.
@@ -28,6 +34,11 @@ var day = 0;
 var canBeSlowed = true; //Wether or not the player can get stuck behind slow kids
 var partnership = false; //Wether or not the player has formed a partnership with Jack
 var never = false; //Wether or not the player has said "never" to jack
+/* Set the boundaries of the map */
+const MAP_MAX_X = 0;
+const MAP_MIN_X = window.innerWidth * -.5;
+const MAP_MIN_Y = window.innerHeight * -.5;
+const MAP_MAX_Y = window.innerHeight * .5;
 
 //If the user has previously toggled the local highscore switch, set hsLocal to true
 if (localStorage.getItem('useHSL') == "true") {
@@ -42,6 +53,8 @@ var obs = document.getElementsByClassName('obstacle');
 var livesDisplay = document.getElementById('aliveDisplay');
 var hitMenuLivesDisplay = document.getElementById('hitAliveDisplay');
 var gp = document.getElementById('gamepiece'); //gets the gamepiece item
+var mp = document.getElementById('mapContainer');
+
 function isTouching(r1, r2) { //returns true if the two parameter elements are touching each other
 	var r1box = r1.getBoundingClientRect();
 	var r2box = r2.getBoundingClientRect();
@@ -65,12 +78,28 @@ function update() { //runs every ten milliseconds
 		if (gp.offsetLeft + gp.offsetWidth > window.innerWidth) { //these ifs check if the gamepiece is touching the sides and stops it
 			rightSpeed = 0;
 		}
+		if (mapY > MAP_MAX_Y) {
+			backSpeedMap = 0;
+		}
+		if (mapY < MAP_MIN_Y) {
+			forwardSpeedMap = 0;
+		}
+		if (mapX > MAP_MAX_X) {
+			leftSpeedMap = 0;
+		}
+		if (mapX < MAP_MIN_X) { //these ifs check if the gamepiece is touching the sides and stops it
+			rightSpeedMap = 0;
+		}
 		y += forwardSpeed - backSpeed;
 		x += rightSpeed - leftSpeed; //moves the block's position (x and y) by the movement speed in each direction
+		mapY -= forwardSpeedMap - backSpeedMap;
+		mapX -= rightSpeedMap - leftSpeedMap; //moves the block's position (x and y) by the movement speed in each direction
 
 
 		gp.style.bottom = y + 'px';
 		gp.style.left = x + 'px'; //actually sets the position from the vars
+		mp.style.bottom = mapY + 'px';
+		mp.style.left = mapX + 'px'; //actually sets the position from the vars
 		for (i = 0; i < obs.length; i++) { //iterates through all obstacles
 			if (isTouching(document.getElementsByClassName('obstacle')[i], document.getElementById('gamepiece'))) { //if the obstacle touches the gamepiece
 				backSpeed = 0;
@@ -177,37 +206,58 @@ setInterval(update, 10); //run the update function from earlier every ten millis
 
 document.addEventListener("keydown", function (event) { // runs when any key is down (not released) when the key is pressed, set the speed to 1 px/ms
 	if (event.key == 's') { // if 's' is pressed, doesnt work on some browsers (!), maybe switch to event.which in future update?
-		backSpeed = speed;
+		if (y > 100 || mapY > MAP_MAX_Y) {
+			backSpeed = speed;
+		} else {
+			backSpeedMap = speed;
+		}
 	}
 	if (event.key == 'w') { // same as 's'	
-		forwardSpeed = speed;
+		if (y < window.innerHeight - 100 || mapY < MAP_MIN_Y) {
+			forwardSpeed = speed;
+		} else {
+			forwardSpeedMap = speed;
+		}
 	}
 	if (event.key == 'a') { // same as 's'
-		leftSpeed = speed;
+		if (x > 100 || mapX > MAP_MAX_X) {
+			leftSpeed = speed;
+		} else {
+			leftSpeedMap = speed;
+		}
+
 	}
 	if (event.key == 'd') { // same as 's'	
-		rightSpeed = speed;
+		if (x < window.innerWidth - 100 || mapX < MAP_MIN_X) {
+			rightSpeed = speed;
+		} else {
+			rightSpeedMap = speed;
+		}
 	}
 });
 
 document.addEventListener("keyup", function (event) { // stop when the key is released
 	if (event.key == 's') { //same as keydown function, but stops the movement when the key is released
 		backSpeed = 0;
+		backSpeedMap = 0;
 		if (mode == 2) {
 			backSpeed = 1;
 		}
 	}
 	if (event.key == 'w') {
 		forwardSpeed = 0;
+		forwardSpeedMap = 0;
 		if (mode == 3) {
 			forwardSpeed = 1;
 		}
 	}
 	if (event.key == 'a') {
 		leftSpeed = 0;
+		leftSpeedMap = 0;
 	}
 	if (event.key == 'd') {
 		rightSpeed = 0;
+		rightSpeedMap = 0;
 	}
 });
 
@@ -243,11 +293,29 @@ function endGame() {
 	passingperiod = false;
 	inclass = false;
 	document.getElementById("mainMenu").style.display = "block";
+	var finalgrade = 0;
+	if(grade >= 90){
+		finalgrade++;
+	}
+	if(popularity >= 50){
+		finalgrade++;
+			//Bonus point for every 10% popularity over the original 50%
+		finalgrade += Math.floor((popularity - 50)/ 10);
+	}
+	//Bonus point for each dollar over the original $20 you earned
+	if(money > 20){
+		finalgrade += money - 20;
+	}
+	
+
+	document.getElementById("gradeContainer").innerHTML = "<h2>GRADE: </h2><h1 style='font-size: 48pt; font-weight: lighter'>" + finalgrade + "/2</h1>;"
+	document.getElementById("results").style.display = "table";
+	document.getElementById("results").innerHTML += "<tr><td>$"+money+"</td><td>"+popularity+"%</td><td>"+grade+"%</td><td>"+butterfingers+"</td><td>"+pepper+"</td><td>"+finalgrade+"/2</td></tr>";
 }
 
 function buyPepper() {
 	if (money < 5) {
-		alert("Not Enough Money!");
+		notify("Not Enough Money!");
 	} else {
 		pepper++;
 		money -= 5;
@@ -257,7 +325,7 @@ function buyPepper() {
 
 function buyButter() {
 	if (money < 3) {
-		alert("Not Enough Money!");
+		notify("Not Enough Money!");
 	} else {
 		butterfingers++;
 		money -= 3;
@@ -334,9 +402,9 @@ function bribePepper() {
 			};
 		}
 	} else if (time > 0) {
-		alert("You can't bribe Mr. Savage unless you're late!")
+		notify("You can't bribe Mr. Savage unless you're late!")
 	} else {
-		alert("You don't have any Dr. Pepper!");
+		notify("You don't have any Dr. Pepper!");
 	}
 }
 
@@ -352,9 +420,9 @@ function bribeButter() {
 			};
 		}
 	} else if (time > 0) {
-		alert("You can't bribe Mr. Savage unless you're late!")
+		notify("You can't bribe Mr. Savage unless you're late!")
 	} else {
-		alert("you don't have any Butterfingers!");
+		notify("you don't have any Butterfingers!");
 	}
 }
 
@@ -379,7 +447,7 @@ function sellButter() {
 		money += 4;
 		time -= 35000;
 	} else {
-		alert("You have no Butterfingers!")
+		notify("You have no Butterfingers!")
 	}
 }
 
@@ -395,7 +463,7 @@ function walkBehind() {
 function naturalSelection() {
 	if (Math.floor(Math.random() * 10) == 0) {
 		//10% chance of being suspended
-		alert("Mr. Savage caught you vaping! You have been suspended. Game Over.");
+		notify("<h2>Mr. Savage caught you vaping!</h2> You have been suspended. Game Over.");
 		endGame();
 	} else {
 		popularity += 10;
@@ -405,7 +473,7 @@ function naturalSelection() {
 
 function sellPepper() {
 	if (pepper < 1) {
-		alert("You don't have any Dr. Pepper!");
+		notify("You don't have any Dr. Pepper!");
 	} else {
 		pepper -= 1;
 		money += 8;
@@ -431,7 +499,7 @@ function createPartnership() {
 			events = true;
 		}, 5000);
 	} else {
-		
+		notify("You don't have enough Butterfingers!")
 	}
 }
 
@@ -450,4 +518,13 @@ function neverJack() {
 	setTimeout(function () {
 		events = true;
 	}, 5000);
+}
+
+function notify(notification) {
+	document.getElementById("popup").style.display = "block";
+	document.getElementById("notificationContent").innerHTML = notification;
+}
+
+function closeNotification() {
+	document.getElementById("popup").style.display = "none";
 }
