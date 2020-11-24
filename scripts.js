@@ -1,3 +1,6 @@
+notify("<h1>Welcome to the Passing Period Alpha</h1><br><h2>Known Issues</h2><br>- Collisions don't really work at all<br>- Mr. Savage doesn't know that this game exists<br>- styles.css contains LOTS of unused rules from my other game, Wild Goose Chase, which I based this off of.<h2>I Need Your Help!</h2>I need a good picture of Mr. Savage's classroom, preferably without Mr. Savage in it. I am talking about his old classroom in the 20s building, not the new one in the STEM building. If you have a picture please contact me at <a href='mailto:scanuprooductions@gmail.com'>scanuprodutions@gmail.com</a><h2>Suggestions?</h2>Contact me at <a href='mailto:scanuprooductions@gmail.com'>scanuprodutions@gmail.com</a> or submit an Issue on my <a href='https://github.com/ScanuNicco/Passing-Period' target='_blank'>GitHub page.</a>");
+
+
 var horizontalPos = 0; //horizontal position of player
 var verticalPos = 0; //vertical position of player
 var grade = 0; //The honors chemistry grade out of 100%
@@ -34,6 +37,7 @@ var day = 0;
 var canBeSlowed = true; //Wether or not the player can get stuck behind slow kids
 var partnership = false; //Wether or not the player has formed a partnership with Jack
 var never = false; //Wether or not the player has said "never" to jack
+var inTutorial = false;
 /* Set the boundaries of the map */
 const MAP_MAX_X = 0;
 const MAP_MIN_X = window.innerWidth * -.5;
@@ -62,6 +66,21 @@ function isTouching(r1, r2) { //returns true if the two parameter elements are t
 		r2box.left + r2.offsetWidth < r1box.left ||
 		r2box.top > r1box.top + r1.offsetHeight ||
 		r2box.top + r2.offsetHeight < r1box.top);
+}
+
+function isColliding(r1, r2) { //The same as isTouching(), but returns an additional parameter to say which side of r1 is touching r2
+	var r1box = r1.getBoundingClientRect();
+	var r2box = r2.getBoundingClientRect();
+	if (r2box.left < r1box.left + r1.offsetWidth && r2box.left + r2.offsetWidth > r1box.left) {
+		//console.log("left");
+		leftSpeed = 0;
+		rightSpeed = 0;
+	}
+	if (!r2box.top < r1box.top + r1.offsetHeight && r2box.top + r2.offsetHeight > r1box.top) {
+		//console.log("top");
+		forwardSpeed = 0;
+		backSpeed = 0;
+	}
 }
 
 function update() { //runs every ten milliseconds
@@ -176,8 +195,12 @@ function update() { //runs every ten milliseconds
 		}
 	}
 	if (inclass) {
-		document.getElementById("powerUpsDisplay").innerHTML = "<p>Honors Chemistry Grade:" + grade + "% Passing Period Starts In: " + Math.floor(time / 1000) + "s</p>";
-		time -= 10;
+		if (!inTutorial) {
+			time -= 10;
+			document.getElementById("powerUpsDisplay").innerHTML = "<p>Honors Chemistry Grade:" + grade + "% Passing Period Starts In: " + Math.floor(time / 1000) + "s</p>";
+		} else {
+			document.getElementById("powerUpsDisplay").innerHTML = "<p>Honors Chemistry Grade:" + grade + "% Passing Period Starts When Tutorial Is Completed.</p>";
+		}
 		if (time < 1) {
 			document.getElementById("sectionsDivider").innerHTML = "<h1>Passing Period</h1>";
 			document.getElementById("sectionsDivider").style.display = "block";
@@ -188,6 +211,8 @@ function update() { //runs every ten milliseconds
 			leaveMulberries();
 			x = 0;
 			y = 0;
+			mapX = 0;
+			mapY = 0;
 			movement = false;
 			setTimeout(function () {
 				document.getElementById("sectionsDivider").classList.remove("intro");
@@ -294,23 +319,23 @@ function endGame() {
 	inclass = false;
 	document.getElementById("mainMenu").style.display = "block";
 	var finalgrade = 0;
-	if(grade >= 90){
+	if (grade >= 90) {
 		finalgrade++;
 	}
-	if(popularity >= 50){
+	if (popularity >= 50) {
 		finalgrade++;
-			//Bonus point for every 10% popularity over the original 50%
-		finalgrade += Math.floor((popularity - 50)/ 10);
+		//Bonus point for every 10% popularity over the original 50%
+		finalgrade += Math.floor((popularity - 50) / 10);
 	}
 	//Bonus point for each dollar over the original $20 you earned
-	if(money > 20){
+	if (money > 20) {
 		finalgrade += money - 20;
 	}
-	
+
 
 	document.getElementById("gradeContainer").innerHTML = "<h2>GRADE: </h2><h1 style='font-size: 48pt; font-weight: lighter'>" + finalgrade + "/2</h1>;"
 	document.getElementById("results").style.display = "table";
-	document.getElementById("results").innerHTML += "<tr><td>$"+money+"</td><td>"+popularity+"%</td><td>"+grade+"%</td><td>"+butterfingers+"</td><td>"+pepper+"</td><td>"+finalgrade+"/2</td></tr>";
+	document.getElementById("results").innerHTML += "<tr><td>$" + money + "</td><td>" + popularity + "%</td><td>" + grade + "%</td><td>" + butterfingers + "</td><td>" + pepper + "</td><td>" + finalgrade + "/2</td></tr>";
 }
 
 function buyPepper() {
@@ -330,13 +355,24 @@ function buyButter() {
 		butterfingers++;
 		money -= 3;
 	}
+	if (inTutorial) {
+		if (butterfingers == 1) {
+			/* If tutorial is active and this is the first Butterfinger */
+			notify("<h2>Keeping Track of your Stats</h2><br>On the top and bottom of your screen, you can see statistics about your game such as your popularity and your Honors Chemistry grade. It's important to keep track of these as they influence your score. To win the game, you need to have an A in Honors Chemistry, and 50% popularity at the end of 3 days. In addition, you get a bonus point for every 10% popularity above 50% and for every dollar over the original $20.");
+		}
+	}
 
 }
 
 function leaveMulberries() {
 	document.getElementById("storefront").style.display = "none";
-	y -= 10;
+	y -= 100;
 	movement = true;
+	if (inTutorial) {
+		notify("<h2>Earning More Money</h2><br>There are many ways to earn money in this game. To start, how about you form a strategic partnership with Jack McInnis. By doing this, you will lose 10% popularity, but you will gain $5 at the beginning of each day (don't ask where he gets it.). You need to give Jack one Butterfinger to do this, so make sure you have one!<h2>Gaining Popularity</h2>Similarly to making money, there are many ways to gain popularity. You can gain popularity (and a few bucks) by selling Butterfingers to the kids in the hallway or Dr. Pepper to the kids in the 20s Building bathroom. If you need a bigger boost in popularity, you can vape in the bathroom but there is a 10% chance of getting caught and suspended.<br><b>Goal: Talk to Jack McInnis in the 30s building</b>");
+		document.getElementById("mulberries").classList.remove("tutorialElement");
+		document.getElementById("jackinnis").classList.add("tutorialElement");
+	}
 }
 
 function getSavaged(penalty) {
@@ -400,6 +436,11 @@ function bribePepper() {
 			document.getElementById("acceptGrade").onclick = function () {
 				getSavaged(0)
 			};
+		} else {
+			document.getElementById("savagepicture").classList.add("savageShake");
+			setTimeout(function() {
+				document.getElementById("savagepicture").classList.remove("savageShake");
+			}, 500)
 		}
 	} else if (time > 0) {
 		notify("You can't bribe Mr. Savage unless you're late!")
@@ -418,6 +459,11 @@ function bribeButter() {
 			document.getElementById("acceptGrade").onclick = function () {
 				getSavaged(0)
 			};
+		} else {
+			document.getElementById("savagepicture").classList.add("savageShake");
+			setTimeout(function() {
+				document.getElementById("savagepicture").classList.remove("savageShake");
+			}, 500)
 		}
 	} else if (time > 0) {
 		notify("You can't bribe Mr. Savage unless you're late!")
@@ -498,8 +544,17 @@ function createPartnership() {
 		setTimeout(function () {
 			events = true;
 		}, 5000);
+		if (inTutorial) {
+			notify("<h2>Getting to Class On Time</h2><br><b>Passing period starts in 30 seconds.</b> Mr. Savage has a pet peeve with people not being on-time to his class, and he may lower your grade if you are late! The safest way to maintain an A in Honors Chem is to get to Mr. Savage's class by the end of passing period. Choose your route charefully, because you can get caught behind slow kids and have a hard time getting to class on time. If you end up late to class, don't worry. If you give Mr. Savage Butterfingers and/or a Dr. Pepper, he has a chance of changing his mind and not duducting your grade.");
+			document.getElementById("jackinnis").classList.remove("tutorialElement");
+			inTutorial = false;
+			time = 30000;
+		}
 	} else {
-		notify("You don't have enough Butterfingers!")
+		notify("You don't have enough Butterfingers!");
+		if (inTutorial) {
+			notify("Go back to mulberries and buy some Butterfinger.");
+		}
 	}
 }
 
@@ -527,4 +582,15 @@ function notify(notification) {
 
 function closeNotification() {
 	document.getElementById("popup").style.display = "none";
+}
+
+function tutorial() {
+	startGame();
+	inTutorial = true;
+	document.getElementById("mulberries").classList.add("tutorialElement");
+	notify("<h2>Welcome to Passing Period</h2><br>You are currently in a descanso, an in-class break. You can use this time to prepare for Passing Period, how about heading to Mulberry's to pick up some Butterfingers and Dr. Pepper. You can find Mulberry's in the top right corner of the map. Use W, A, S, and D to move your game piece around.<br><b>Goal: Get to Mulberry's and purchase a Butterfinger.</b>");
+}
+
+function test(){
+	notify('<iframe width="100%" height="100%" style="position: absolute; left: 0px; top: 0px;" src="https://www.youtube.com/embed/oHg5SJYRHA0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>');
 }
