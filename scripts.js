@@ -429,6 +429,8 @@ function getSavaged(penalty) {
 		}
 		x = 0;
 		y = 0;
+		mapX = 0;
+		mapY = 0;
 		if (Math.floor(Math.random() * 2) == 0) {
 			document.getElementById("sectionsDivider").innerHTML = "<h1>Passing Period</h1>";
 			document.getElementById("sectionsDivider").style.display = "block";
