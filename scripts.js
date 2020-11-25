@@ -1,5 +1,7 @@
-notify("<h1>Welcome to the Passing Period Alpha</h1><br><h2>Known Issues</h2><br>- Collisions don't really work at all<br>- Mr. Savage doesn't know that this game exists<br>- styles.css contains LOTS of unused rules from my other game, Wild Goose Chase, which I based this off of.<h2>I Need Your Help!</h2>I need a good picture of Mr. Savage's classroom, preferably without Mr. Savage in it. I am talking about his old classroom in the 20s building, not the new one in the STEM building. If you have a picture please contact me at <a href='mailto:scanuprooductions@gmail.com'>scanuprodutions@gmail.com</a><h2>Suggestions?</h2>Contact me at <a href='mailto:scanuprooductions@gmail.com'>scanuprodutions@gmail.com</a> or submit an Issue on my <a href='https://github.com/ScanuNicco/Passing-Period' target='_blank'>GitHub page.</a>");
 
+const WELCOME_MESSAGE = "<h1>Welcome to the Passing Period Alpha</h1><br><h2>Known Issues</h2><br>- When you are all the way on the edge of the map and you are colliding with something, it is possible to glitch the gamepiece off the edgo of the map.<br>- Mr. Savage doesn't know that this game exists<br>- styles.css contains LOTS of unused rules from my other game, Wild Goose Chase, which I based this off of.<h2>I Need Your Help!</h2>I need a good picture of Mr. Savage's classroom, preferably without Mr. Savage in it. I am talking about his old classroom in the 20s building, not the new one in the STEM building. If you have a picture please contact me at <a href='mailto:scanuprooductions@gmail.com'>scanuprodutions@gmail.com</a><h2>Suggestions?</h2>Contact me at <a href='mailto:scanuprooductions@gmail.com'>scanuprodutions@gmail.com</a> or submit an Issue on my <a href='https://github.com/ScanuNicco/Passing-Period' target='_blank'>GitHub page.</a>";
+const CREDITS_MESSAGE = "<h1>Credits</h1>Game by Nicco Scanu with some programming help from Charlie Clowes.<h2>Thanks To:</h2><ul><li>Charlie Clowes for helping me troubleshoot my code</li><li>Mr. Savage for being a great teacher and inspiring this game</li><li>The Inkscape Project for making the software I used for nearly all of the game art</li><li>Jack McInnis for inspiring his character</li>";
+notify(WELCOME_MESSAGE);
 
 var horizontalPos = 0; //horizontal position of player
 var verticalPos = 0; //vertical position of player
@@ -68,18 +70,40 @@ function isTouching(r1, r2) { //returns true if the two parameter elements are t
 		r2box.top + r2.offsetHeight < r1box.top);
 }
 
-function isColliding(r1, r2) { //The same as isTouching(), but returns an additional parameter to say which side of r1 is touching r2
+function isColliding(r1, r2) { //The same as isTouching(), but returns a number to tell which way the gamepiece needs to move.
 	var r1box = r1.getBoundingClientRect();
 	var r2box = r2.getBoundingClientRect();
-	if (r2box.left < r1box.left + r1.offsetWidth && r2box.left + r2.offsetWidth > r1box.left) {
-		//console.log("left");
-		leftSpeed = 0;
-		rightSpeed = 0;
-	}
-	if (!r2box.top < r1box.top + r1.offsetHeight && r2box.top + r2.offsetHeight > r1box.top) {
-		//console.log("top");
-		forwardSpeed = 0;
-		backSpeed = 0;
+	if (!(r2box.left > r1box.left + r1.offsetWidth || r2box.left + r2.offsetWidth < r1box.left || r2box.top > r1box.top + r1.offsetHeight || r2box.top + r2.offsetHeight < r1box.top)) {
+		/*if (r2box.left <= r1box.right) {
+			//console.log("left");
+			//leftSpeed = 0;
+			console.log("direction 1");
+			//x += 10;
+		} 
+		if (r2box.right >= r1box.left) {
+			rightSpeed = 0;
+			console.log("direction 2");
+			x -= 3;
+		} 
+		if (r2box.top <= r1box.bottom) {
+			//console.log("top");
+			//forwardSpeed = 0;
+			console.log("direction 3");
+			//y -= 10;
+		} 
+		if (r2box.bottom >= r1box.top) {
+			//backSpeed = 0;
+			console.log("direction 4");
+			//y += 10;
+		} */
+		let left = r1box.left > r2box.left && r1box.left < r2box.right;
+		let right = r1box.right < r2box.right && r1box.right > r2box.left;
+		let top = r1box.top > r2box.top && r1box.top < r2box.bottom;
+		let bottom = r1box.bottom < r2box.bottom && r1box.bottom > r2box.top;
+
+		return [left, top, right, bottom].indexOf(true);
+	} else {
+		return -1;
 	}
 }
 
@@ -120,11 +144,29 @@ function update() { //runs every ten milliseconds
 		mp.style.bottom = mapY + 'px';
 		mp.style.left = mapX + 'px'; //actually sets the position from the vars
 		for (i = 0; i < obs.length; i++) { //iterates through all obstacles
-			if (isTouching(document.getElementsByClassName('obstacle')[i], document.getElementById('gamepiece'))) { //if the obstacle touches the gamepiece
-				backSpeed = 0;
-				forwardSpeed = 0;
+			var collision = isColliding(document.getElementsByClassName('obstacle')[i], document.getElementById('gamepiece'));
+			if (collision == -1) {
+				//Not touching, do nothing
+			} else if (collision == 0) {
+				//Touching on the right, move left
 				rightSpeed = 0;
+				x -= rightSpeedMap; //If the map is moving, move the gamepiece the opposite direction
+				x -= 3;
+			} else if (collision == 1) {
+				//Touching on the bottom, move up
+				backSpeed = 0;
+				y += backSpeedMap; //If the map is moving, move the gamepiece the opposite direction
+				y += 3;
+			} else if (collision == 2) {
+				//Touching on the left, move right
 				leftSpeed = 0;
+				x += leftSpeedMap; //If the map is moving, move the gamepiece the opposite direction
+				x += 3;
+			} else if (collision == 3) {
+				//Touching on the bottom, move down
+				forwardSpeed = 0;
+				y -= forwardSpeedMap; //If the map is moving, move the gamepiece the opposite direction
+				y -= 3;
 			}
 		}
 		if (events) {
@@ -438,7 +480,7 @@ function bribePepper() {
 			};
 		} else {
 			document.getElementById("savagepicture").classList.add("savageShake");
-			setTimeout(function() {
+			setTimeout(function () {
 				document.getElementById("savagepicture").classList.remove("savageShake");
 			}, 500)
 		}
@@ -461,7 +503,7 @@ function bribeButter() {
 			};
 		} else {
 			document.getElementById("savagepicture").classList.add("savageShake");
-			setTimeout(function() {
+			setTimeout(function () {
 				document.getElementById("savagepicture").classList.remove("savageShake");
 			}, 500)
 		}
@@ -591,6 +633,6 @@ function tutorial() {
 	notify("<h2>Welcome to Passing Period</h2><br>You are currently in a descanso, an in-class break. You can use this time to prepare for Passing Period, how about heading to Mulberry's to pick up some Butterfingers and Dr. Pepper. You can find Mulberry's in the top right corner of the map. Use W, A, S, and D to move your game piece around.<br><b>Goal: Get to Mulberry's and purchase a Butterfinger.</b>");
 }
 
-function test(){
+function test() {
 	notify('<iframe width="100%" height="100%" style="position: absolute; left: 0px; top: 0px;" src="https://www.youtube.com/embed/oHg5SJYRHA0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>');
 }

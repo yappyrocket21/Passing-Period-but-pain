@@ -748,3 +748,9 @@ input:checked + .slider:before {
 		transform: translateX(0px);
 	}
 }
+
+#linksContainer {
+	position: absolute;
+	left: 0px;
+	bottom: 0px;
+}
