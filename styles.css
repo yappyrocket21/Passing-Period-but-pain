@@ -136,6 +136,7 @@ body {
 	background-size: cover;
 	z-index: -2;
 	position: absolute;
+	transition: ease-in-out 2s;
 }
 
 /* Styles that apply to all powerups */
@@ -753,4 +754,26 @@ input:checked + .slider:before {
 	position: absolute;
 	left: 0px;
 	bottom: 0px;
+}
+
+.earthquake {
+	animation: earthquake .4s infinite;
+}
+
+@keyframes earthquake {
+	0% {
+		transform: translate(0px, 0px);
+	}
+
+	33% {
+		transform: translate(20px, 20px);
+	}
+
+	66% {
+		transform: translate(-20px, -10px);
+	}
+
+	100% {
+		transform: translate(0px, 0px);
+	}
 }

@@ -331,7 +331,7 @@ document.addEventListener("keyup", function (event) { // stop when the key is re
 var mode = 1;
 
 function startGame() {
-	document.getElementById("sectionsDivider").innerHTML = "<h1>Ms. Guillen gave your class a descanso.</h1><h2>You have 30 seconds to prepare for passing period.</h2>";
+	document.getElementById("sectionsDivider").innerHTML = "<h1>Ms. Guillen gave your class a descanso (an in-class break).</h1><h2>You have 30 seconds to prepare for passing period.</h2>";
 	document.getElementById("sectionsDivider").style.display = "block";
 	document.getElementById("sectionsDivider").classList.remove("outro");
 	document.getElementById("sectionsDivider").classList.add("intro");
@@ -350,6 +350,9 @@ function startGame() {
 			grade = 100;
 			days = 3;
 			day = 1;
+			if(Math.floor(Math.random() * 100) < 2){
+				earthquake();
+			}
 		}, 1000)
 	}, 4000);
 }
@@ -449,7 +452,7 @@ function getSavaged(penalty) {
 				}, 1000)
 			}, 4000);
 		} else {
-			document.getElementById("sectionsDivider").innerHTML = "<h1>Ms. Guillen gave your class a descanso.</h1><h2>You have 30 seconds to prepare for passing period.</h2>";
+			document.getElementById("sectionsDivider").innerHTML = "<h1>Ms. Guillen gave your class a descanso (an in-class break).</h1><h2>You have 30 seconds to prepare for passing period.</h2>";
 			document.getElementById("sectionsDivider").style.display = "block";
 			document.getElementById("sectionsDivider").classList.remove("outro");
 			document.getElementById("sectionsDivider").classList.add("intro");
@@ -637,4 +640,16 @@ function tutorial() {
 
 function test() {
 	notify('<iframe width="100%" height="100%" style="position: absolute; left: 0px; top: 0px;" src="https://www.youtube.com/embed/oHg5SJYRHA0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>');
+}
+
+function earthquake() {
+	document.getElementById('mapContainer').classList.add('earthquake');
+	for(i = 0; i < document.getElementsByClassName("obstacle").length; i++){
+		document.getElementsByClassName('obstacle')[i].style.bottom = parseInt(document.getElementsByClassName('obstacle')[i].style.bottom) - (Math.floor(Math.random() * 20) - 10) + "vh";
+		document.getElementsByClassName('obstacle')[i].style.left = parseInt(document.getElementsByClassName('obstacle')[i].style.left) - (Math.floor(Math.random() * 20) - 10) + "vw";
+	}
+	setTimeout(function() {
+		document.getElementById('mapContainer').classList.remove('earthquake');
+	}, 2000);
+	document.getElementById('savage').style.left = "85vw";
 }
