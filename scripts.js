@@ -213,6 +213,7 @@ function update() { //runs every ten milliseconds
 				document.getElementById("acceptGrade").onclick = function () {
 					getSavaged(0)
 				};
+				document.getElementById("acceptGrade").innerText = "Continue to next day";
 			}
 		}
 		if (isTouching(gp, document.getElementsByClassName("slowkids")[0]) || isTouching(gp, document.getElementsByClassName("slowkids")[1])) {
@@ -468,9 +469,9 @@ function getSavaged(penalty) {
 					time = 30000;
 				}, 1000)
 			}, 4000);
-		}
-		document.getElementById("savageroom").style.display = "none";
+		}	
 	}
+	document.getElementById("savageroom").style.display = "none";
 }
 
 function bribePepper() {
@@ -650,6 +651,7 @@ function earthquake() {
 	}
 	setTimeout(function() {
 		document.getElementById('mapContainer').classList.remove('earthquake');
+		notify('<h1>An Eartquake Occured</h1><br>This has a 2% chance of happening at the beginning of any game. Many objects on the map have moved, so you may need to find different paths to normal locations.<br><button onclick="closeNotification()">Continue Playing</button><button onclick="window.location.reload()">Start New Game</button>');
 	}, 2000);
 	document.getElementById('savage').style.left = "85vw";
 }
