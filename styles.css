@@ -34,14 +34,6 @@ html {
 	cursor: url(https://scanuproductions.com/images/pointer.png) 5 5, crosshair;
 }
 
-input {
-	border: solid;
-	background: orange;
-	transform: skewX(-15deg);
-	padding: 5px;
-	width: 90%;
-}
-
 #appMenu {
 	position: fixed;
 	background: grey;
@@ -81,7 +73,7 @@ body {
 	z-index: 999;
 }
 
-#aliveDisplayContainer {
+#topInfoBar {
 	background: rgba(0, 0, 0, .4);
 	display: block;
 	width: 700px;
@@ -102,7 +94,7 @@ body {
 	z-index: 999;
 }
 
-#powerUpsDisplay {
+#bottomInfoBar {
 	background: rgba(0, 0, 0, .6);
 	display: block;
 	width: 700px;
@@ -114,8 +106,8 @@ body {
 	z-index: 1;
 }
 
-#powerUpsDisplay p,
-#aliveDisplayContainer p {
+#topInfoBar p,
+#bottomInfoBar p {
 	display: inline-block;
 	margin: 5px;
 	font-family: arial;
@@ -133,6 +125,7 @@ body {
 	font-weight: bold;
 }
 
+/* obstacles */
 .obstacle {
 	background: red;
 	background-size: cover;
@@ -142,7 +135,7 @@ body {
 	transition-property: left, bottom;
 }
 
-/* Styles that apply to all powerups */
+/* Hitboxes that trigger an action (e.g. Mr. Savage) */
 .functional {
 	background-size: contain;
 	background: transparent;
@@ -150,297 +143,12 @@ body {
 	z-index: -2;
 }
 
-/* Styles that apply to all powerups */
+/* Decorative Map Elements (e.g. the terra-cotta tiles on the breezeway) */
 .decorative {
 	background-size: contain;
 	background: purple;
 	position: absolute;
 	z-index: -3;
-}
-
-.threeD {
-	border-bottom: solid 3px #333333;
-	border-right: solid 3px #111111;
-}
-
-#speed {
-	background: purple;
-	background-image: url('https://scanuproductions.com/images/SpeedIcon.png');
-	background-size: contain;
-}
-
-#sheild {
-	background: red;
-	position: absolute;
-	background-image: url('https://scanuproductions.com/images/SheildIcon.png');
-	background-size: contain;
-}
-
-#small {
-	background: lightblue;
-	position: absolute;
-	background-image: url('https://scanuproductions.com/images/ShrinkIcon.png');
-	background-size: contain;
-}
-
-#add {
-	position: absolute;
-	bottom: 50px;
-	left: 50px;
-	background: linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3);
-	background-size: 1800% 1800%;
-
-	-webkit-animation: rainbow 18s ease infinite;
-	-z-animation: rainbow 18s ease infinite;
-	-o-animation: rainbow 18s ease infinite;
-	animation: rainbow 18s ease infinite;
-}
-
-#batteryUp {
-	background: green;
-	background-image: url("https://scanuproductions.com/images/fullBattery.png");
-	background-size: contain;
-}
-
-
-@-webkit-keyframes rainbow {
-	0% {
-		background-position: 0% 82%
-	}
-
-	50% {
-		background-position: 100% 19%
-	}
-
-	100% {
-		background-position: 0% 82%
-	}
-}
-
-@-moz-keyframes rainbow {
-	0% {
-		background-position: 0% 82%
-	}
-
-	50% {
-		background-position: 100% 19%
-	}
-
-	100% {
-		background-position: 0% 82%
-	}
-}
-
-@-o-keyframes rainbow {
-	0% {
-		background-position: 0% 82%
-	}
-
-	50% {
-		background-position: 100% 19%
-	}
-
-	100% {
-		background-position: 0% 82%
-	}
-}
-
-@keyframes rainbow {
-	0% {
-		background-position: 0% 82%
-	}
-
-	50% {
-		background-position: 100% 19%
-	}
-
-	100% {
-		background-position: 0% 82%
-	}
-}
-
-.menuLink {
-	text-decoration: underline;
-	cursor: url(https://scanuproductions.com/images/pointer.png) 5 5, crosshair;
-
-}
-
-#startButton {
-	cursor: url(https://scanuproductions.com/images/pointer.png) 5 5, crosshair;
-}
-
-.menuButton {
-	background: #3333ff;
-	border: none;
-	color: Black;
-	font-size: 16pt;
-	padding: 15px;
-	margin: 5px;
-	transition: ease-in-out;
-	transition-duration: .8s;
-	border-radius: 5px;
-}
-
-.menuButton:hover {
-	background: #33ff33;
-}
-
-#difficultyInput {
-	-webkit-appearance: none;
-	width: 40%;
-	height: 25px;
-	background: #3333ff;
-	outline: none;
-	-webkit-transition: .2s;
-	cursor: url(https://scanuproductions.com/images/pointer.png) 5 5, crosshair;
-	padding: 0px;
-	border-radius: 5px;
-	border: none;
-}
-
-#difficultyInput::-moz-range-track {
-	background-color: orange;
-}
-
-
-#difficultyInput::-webkit-slider-thumb {
-	-webkit-appearance: none;
-	width: 100px;
-	height: 50px;
-	background: url('https://scanuproductions.com/images/drone.png');
-	background-repeat: no-repeat;
-	cursor: pointer;
-	cursor: url(https://scanuproductions.com/images/pointer.png) 5 5, crosshair;
-	margin: 0px;
-	background-size: contain;
-}
-
-#difficultyInput::-moz-range-thumb {
-	-moz-appearance: none;
-	width: 40px;
-	height: 40px;
-	background: url('https://scanuproductions.com/images/drone.png'), black;
-	background-repeat: no-repeat;
-	cursor: pointer;
-	cursor: url(https://scanuproductions.com/images/pointer.png) 5 5, crosshair;
-	margin: 0px;
-}
-
-#hitMenu {
-	background: #6b6b6b;
-	width: 300;
-	border-top: solid;
-	border-color: white;
-	border-radius: 0px;
-	border-top-width: 10px;
-	font-family: 'IBM Plex Sans', sans-serif;
-	color: white;
-	position: absolute;
-	top: 40%;
-	left: 40%;
-	display: none;
-	box-shadow: 5px 5px 5px rgba(0, 0, 0, .6);
-}
-
-.menuSection {
-	display: none;
-	max-width: 50vh;
-	margin: auto;
-	margin-top: 10vh;
-}
-
-/* The switch - the box around the slider */
-.switch {
-	position: relative;
-	display: inline-block;
-	width: 60px;
-	height: 34px;
-}
-
-/* Hide default HTML checkbox */
-.switch input {
-	opacity: 0;
-	width: 0;
-	height: 0;
-}
-
-/* The slider */
-.slider {
-	position: absolute;
-	cursor: pointer;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background-color: #ccc;
-	-webkit-transition: .4s;
-	transition: .4s;
-}
-
-.slider:before {
-	position: absolute;
-	content: "";
-	height: 26px;
-	width: 26px;
-	left: 4px;
-	bottom: 4px;
-	background-color: white;
-	-webkit-transition: .4s;
-	transition: .4s;
-}
-
-input:checked + .slider {
-	background-color: #2196F3;
-}
-
-input:focus + .slider {
-	box-shadow: 0 0 1px #2196F3;
-}
-
-input:checked + .slider:before {
-	-webkit-transform: translateX(26px);
-	-ms-transform: translateX(26px);
-	transform: translateX(26px);
-}
-
-/* Rounded sliders */
-.slider.round {
-	border-radius: 34px;
-}
-
-.slider.round:before {
-	border-radius: 50%;
-}
-
-#batteryIcon {
-	background: url("https://scanuproductions.com/images/battery.png");
-	position: fixed;
-	bottom: 0px;
-	left: -15px;
-	width: 100px;
-	height: 100px;
-	background-position: contain;
-	background-size: contain;
-}
-
-#batteryStatus {
-	width: 33;
-	height: 70;
-	background: green;
-	position: absolute;
-	left: 33px;
-	bottom: 10px;
-	border-radius: 3px;
-}
-
-.puContainer {
-	position: absolute;
-	width: 8vw;
-	height: 12vw;
-}
-
-.parachute {
-	width: 100%;
 }
 
 #storefront {
@@ -531,6 +239,9 @@ input:checked + .slider:before {
 	z-index: 1;
 	background: rgba(0, 0, 0, .4);
     backdrop-filter: blur(15px);
+	display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .actionButtonsContainer button {
@@ -541,7 +252,7 @@ input:checked + .slider:before {
 	border-radius: 5px;
 	background: rgba(255, 255, 255, .2);
 	color: white;
-	font-weight: 14pt;
+	font-size: 13pt;
 	transition-duration: .5s;
 }
 

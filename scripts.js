@@ -1,12 +1,19 @@
 const WELCOME_MESSAGE = "<h1>Welcome to the Passing Period Alpha</h1><br><h2>Known Issues</h2><br>- When you are all the way on the edge of the map and you are colliding with something, it is possible to glitch the gamepiece off the edgo of the map.<br>- Mr. Savage doesn't know that this game exists<br>- styles.css contains LOTS of unused rules from my other game, Wild Goose Chase, which I based this off of.<h2>I Need Your Help!</h2>I need a good picture of Mr. Savage's classroom, preferably without Mr. Savage in it. I am talking about his old classroom in the 20s building, not the new one in the STEM building. If you have a picture please contact me at <a href='mailto:scanuprooductions@gmail.com'>scanuprodutions@gmail.com</a><h2>Suggestions?</h2>Contact me at <a href='mailto:scanuprooductions@gmail.com'>scanuprodutions@gmail.com</a> or submit an Issue on my <a href='https://github.com/ScanuNicco/Passing-Period' target='_blank'>GitHub page.</a>";
 const CREDITS_MESSAGE = "<h1>Credits</h1>Game by Nicco Scanu with some programming help from Charlie Clowes.<h2>Thanks To:</h2><ul><li>Charlie Clowes for helping me troubleshoot my code</li><li>Mr. Savage for being a great teacher and inspiring this game</li><li>The Inkscape Project for making the software I used for nearly all of the game art</li><li>Jack McInnis for inspiring his character</li>";
 notify(WELCOME_MESSAGE);
+/* Set the boundaries of the map. X and Y are inverted on the map for some reason, so MAX_X is left, MAX_Y is bottom... */
+const MAP_MAX_X = 0;
+const MAP_MIN_X = window.innerWidth * -.5;
+const MAP_MIN_Y = window.innerHeight * -.5;
+const MAP_MAX_Y = window.innerHeight * .5;
+
+/* How close the gamepiece gets to the edge of the screen before the map starts scrolling */
+const MAP_SCROLL_BUFFER = 100;
 
 var horizontalPos = 0; //horizontal position of player
 var verticalPos = 0; //vertical position of player
 var grade = 0; //The honors chemistry grade out of 100%
 var time = 0; //The remaining in ms.
-var highScore = 0; //the highest score the player has achieved
 var passingperiod = false; //whether it is a passing period or in class
 var inclass = false;
 var forwardSpeed = 0; //speed in px/ms (pixels per millisecond) to move forward (up)
@@ -17,17 +24,12 @@ var forwardSpeedMap = 0; //speed in px/ms (pixels per millisecond) to move forwa
 var backSpeedMap = 0; //speed in px/ms to move back (down)
 var leftSpeedMap = 0; //speed in px/ms to move left
 var rightSpeedMap = 0; //speed in px/ms to move right
-var active = false; //if the game is active, off until game starts
-var hit = false; //if the block has been hit
-var blockSpeed = 1; //speed the blocks move, in px/ms
 var speed = 3; //speed of block in px/ms
-var y = 5; //position of gamepiece vertically
-var x = 5; //position of gp horizontally
+var y = MAP_SCROLL_BUFFER + 5; //starting position of gamepiece vertically
+var x = 5; //starting position of gp horizontally
 var mapY = 0; //mapX
 var mapX = 0; //mapY
 var movement = false; //if movement is allowed
-var battery = 70; //Amount of battery that the drone has (0 - 70)
-var hsLocal = false; //Store highscore locally instead of on your Scanu Productions account.
 var money = 0;
 var popularity = 0;
 var pepper = 0;
@@ -39,11 +41,6 @@ var canBeSlowed = true; //Wether or not the player can get stuck behind slow kid
 var partnership = false; //Wether or not the player has formed a partnership with Jack
 var never = false; //Wether or not the player has said "never" to jack
 var inTutorial = false;
-/* Set the boundaries of the map */
-const MAP_MAX_X = 0;
-const MAP_MIN_X = window.innerWidth * -.5;
-const MAP_MIN_Y = window.innerHeight * -.5;
-const MAP_MAX_Y = window.innerHeight * .5;
 
 //If the user has previously toggled the local highscore switch, set hsLocal to true
 if (localStorage.getItem('useHSL') == "true") {
@@ -53,12 +50,12 @@ if (localStorage.getItem('useHSL') == "true") {
 //move to start position and set number of lives to 3 and the score to 0000
 document.getElementById("gamepiece").style.bottom = verticalPos;
 document.getElementById("gamepiece").style.left = horizontalPos;
-//According to W3Schools, acessing the HTML DOM is one of the slowest things in JavaScript so accesing it only once when the page loads is faster.
-var obs = document.getElementsByClassName('obstacle');
-var livesDisplay = document.getElementById('aliveDisplay');
-var hitMenuLivesDisplay = document.getElementById('hitAliveDisplay');
+//According to W3Schools, acessing the HTML DOM is one of the slowest things in JavaScript so define all the elements that are accessed repeatedly now.
+var obs = document.getElementsByClassName('obstacle'); //The list of obstacle elements
+var topInfo = document.getElementById('topInfoBar'); //The top info bar
+var bottomInfo = document.getElementById("bottomInfoBar"); //The bottom info bar
 var gp = document.getElementById('gamepiece'); //gets the gamepiece item
-var mp = document.getElementById('mapContainer');
+var mp = document.getElementById('mapContainer'); //The div that contains all of the map elements. This is what moves when the map scrolls.
 
 function isTouching(r1, r2) { //returns true if the two parameter elements are touching each other
 	var r1box = r1.getBoundingClientRect();
@@ -73,28 +70,6 @@ function isColliding(r1, r2) { //The same as isTouching(), but returns a number 
 	var r1box = r1.getBoundingClientRect();
 	var r2box = r2.getBoundingClientRect();
 	if (!(r2box.left > r1box.left + r1.offsetWidth || r2box.left + r2.offsetWidth < r1box.left || r2box.top > r1box.top + r1.offsetHeight || r2box.top + r2.offsetHeight < r1box.top)) {
-		/*if (r2box.left <= r1box.right) {
-			//console.log("left");
-			//leftSpeed = 0;
-			console.log("direction 1");
-			//x += 10;
-		} 
-		if (r2box.right >= r1box.left) {
-			rightSpeed = 0;
-			console.log("direction 2");
-			x -= 3;
-		} 
-		if (r2box.top <= r1box.bottom) {
-			//console.log("top");
-			//forwardSpeed = 0;
-			console.log("direction 3");
-			//y -= 10;
-		} 
-		if (r2box.bottom >= r1box.top) {
-			//backSpeed = 0;
-			console.log("direction 4");
-			//y += 10;
-		} */
 		let left = r1box.left > r2box.left && r1box.left < r2box.right;
 		let right = r1box.right < r2box.right && r1box.right > r2box.left;
 		let top = r1box.top > r2box.top && r1box.top < r2box.bottom;
@@ -108,7 +83,7 @@ function isColliding(r1, r2) { //The same as isTouching(), but returns a number 
 
 function update() { //runs every ten milliseconds
 	if (movement) {
-		 //Prevent The Gampiece from Moving off the edge of the screens
+		 //Prevent The Gampiece from Moving off the edge of the screen
 		if (gp.offsetTop + gp.offsetHeight > window.innerHeight) {
 			backSpeed = 0;
 		}
@@ -122,26 +97,26 @@ function update() { //runs every ten milliseconds
 			rightSpeed = 0;
 		}
 		//If the gampiece is near the edge of the screen and the map is not scrolled to the maximum, stop the gamepiece and start scrolling the map instead
-		if (gp.offsetTop + gp.offsetHeight > window.innerHeight - 100 && mapY < MAP_MAX_Y) {
+		if (gp.offsetTop + gp.offsetHeight > window.innerHeight - MAP_SCROLL_BUFFER && mapY < MAP_MAX_Y) {
 			backSpeedMap = speed;
 			y += speed;
 		} else {
 			backSpeedMap = 0;
 		}
-		if (gp.offsetTop < 100 && mapY > MAP_MIN_Y) {
+		if (gp.offsetTop < MAP_SCROLL_BUFFER && mapY > MAP_MIN_Y) {
 			forwardSpeedMap = speed;
 			y -= speed;
 		} else {
 			forwardSpeedMap = 0;
 		}
 
-		if (gp.offsetLeft < 100 && mapX < MAP_MAX_X) {
+		if (gp.offsetLeft < MAP_SCROLL_BUFFER && mapX < MAP_MAX_X) {
 			leftSpeedMap = speed;
 			x += speed;
 		} else {
 			leftSpeedMap = 0;
 		}
-		if (gp.offsetLeft + gp.offsetWidth > window.innerWidth - 100 && mapX > MAP_MIN_X) {
+		if (gp.offsetLeft + gp.offsetWidth > window.innerWidth - MAP_SCROLL_BUFFER && mapX > MAP_MIN_X) {
 			rightSpeedMap = speed;
 			x -= speed;
 		} else {
@@ -171,7 +146,7 @@ function update() { //runs every ten milliseconds
 		mp.style.bottom = mapY + 'px';
 		mp.style.left = mapX + 'px'; //actually sets the position from the vars
 		for (i = 0; i < obs.length; i++) { //iterates through all obstacles
-			var collision = isColliding(document.getElementsByClassName('obstacle')[i], document.getElementById('gamepiece'));
+			var collision = isColliding(obs[i], gp);
 			if (collision == -1) {
 				//Not touching, do nothing
 			} else if (collision == 0) {
@@ -214,7 +189,7 @@ function update() { //runs every ten milliseconds
 
 	}
 	if (passingperiod) { //if the game is started
-		document.getElementById("powerUpsDisplay").innerHTML = "<p>Honors Chemistry Grade:" + grade + "% Time Remaining in Passing Period: " + Math.floor(time / 1000) + "s</p>";
+		bottomInfo.innerHTML = "<p>Honors Chemistry Grade:" + grade + "% Time Remaining in Passing Period: " + Math.floor(time / 1000) + "s</p>";
 		time -= 10;
 		if (isTouching(gp, document.getElementById("savage"))) {
 			movement = false;
@@ -267,9 +242,9 @@ function update() { //runs every ten milliseconds
 	if (inclass) {
 		if (!inTutorial) {
 			time -= 10;
-			document.getElementById("powerUpsDisplay").innerHTML = "<p>Honors Chemistry Grade:" + grade + "% Passing Period Starts In: " + Math.floor(time / 1000) + "s</p>";
+			bottomInfo.innerHTML = "<p>Honors Chemistry Grade:" + grade + "% Passing Period Starts In: " + Math.floor(time / 1000) + "s</p>";
 		} else {
-			document.getElementById("powerUpsDisplay").innerHTML = "<p>Honors Chemistry Grade:" + grade + "% Passing Period Starts When Tutorial Is Completed.</p>";
+			bottomInfo.innerHTML = "<p>Honors Chemistry Grade:" + grade + "% Passing Period Starts When Tutorial Is Completed.</p>";
 		}
 		if (time < 1) {
 			document.getElementById("sectionsDivider").innerHTML = "<h1>Passing Period</h1>";
@@ -280,7 +255,7 @@ function update() { //runs every ten milliseconds
 			inclass = false;
 			leaveMulberries();
 			x = 5;
-			y = 5;
+			y = MAP_SCROLL_BUFFER + 5;
 			mapX = 0;
 			mapY = 0;
 			movement = false;
@@ -295,39 +270,22 @@ function update() { //runs every ten milliseconds
 			}, 4000);
 		}
 	}
-	document.getElementById("aliveDisplayContainer").innerHTML = "<p>Money: $" + money + " Popularity: " + popularity + "% Butterfingers: " + butterfingers + " Dr. Pepper: " + pepper + " Day: " + day + "</p>";
+	topInfo.innerHTML = "<p>Money: $" + money + " Popularity: " + popularity + "% Butterfingers: " + butterfingers + " Dr. Pepper: " + pepper + " Day: " + day + "</p>";
 }
 setInterval(update, 10); //run the update function from earlier every ten milliseconds (100fps)
 
 document.addEventListener("keydown", function (event) { // runs when any key is down (not released) when the key is pressed, set the speed to 1 px/ms
 	if (event.key == 's') { // if 's' is pressed, doesnt work on some browsers (!), maybe switch to event.which in future update?
-		//if (y > 100 || mapY > MAP_MAX_Y) {
 			backSpeed = speed;
-		//} else {
-			//backSpeedMap = speed;
-		//}
 	}
 	if (event.key == 'w') { // same as 's'	
-		//if (y < window.innerHeight - 100 || mapY < MAP_MIN_Y) {
 			forwardSpeed = speed;
-		//} else {
-			//forwardSpeedMap = speed;
-		//}
 	}
 	if (event.key == 'a') { // same as 's'
-		//if (x > 100 || mapX > MAP_MAX_X) {
 			leftSpeed = speed;
-		//} else {
-			//leftSpeedMap = speed;
-		//}
-
 	}
 	if (event.key == 'd') { // same as 's'	
-		//if (x < window.innerWidth - 100 || mapX < MAP_MIN_X) {
 			rightSpeed = speed;
-		//} else {
-			//rightSpeedMap = speed;
-		//}
 	}
 });
 
@@ -459,7 +417,7 @@ function getSavaged(penalty) {
 			money += 5;
 		}
 		x = 5;
-		y = 5;
+		y = MAP_SCROLL_BUFFER + 5;
 		mapX = 0;
 		mapY = 0;
 		if (Math.floor(Math.random() * 2) == 0) {
