@@ -1,4 +1,3 @@
-
 const WELCOME_MESSAGE = "<h1>Welcome to the Passing Period Alpha</h1><br><h2>Known Issues</h2><br>- When you are all the way on the edge of the map and you are colliding with something, it is possible to glitch the gamepiece off the edgo of the map.<br>- Mr. Savage doesn't know that this game exists<br>- styles.css contains LOTS of unused rules from my other game, Wild Goose Chase, which I based this off of.<h2>I Need Your Help!</h2>I need a good picture of Mr. Savage's classroom, preferably without Mr. Savage in it. I am talking about his old classroom in the 20s building, not the new one in the STEM building. If you have a picture please contact me at <a href='mailto:scanuprooductions@gmail.com'>scanuprodutions@gmail.com</a><h2>Suggestions?</h2>Contact me at <a href='mailto:scanuprooductions@gmail.com'>scanuprodutions@gmail.com</a> or submit an Issue on my <a href='https://github.com/ScanuNicco/Passing-Period' target='_blank'>GitHub page.</a>";
 const CREDITS_MESSAGE = "<h1>Credits</h1>Game by Nicco Scanu with some programming help from Charlie Clowes.<h2>Thanks To:</h2><ul><li>Charlie Clowes for helping me troubleshoot my code</li><li>Mr. Savage for being a great teacher and inspiring this game</li><li>The Inkscape Project for making the software I used for nearly all of the game art</li><li>Jack McInnis for inspiring his character</li>";
 notify(WELCOME_MESSAGE);
@@ -22,8 +21,8 @@ var active = false; //if the game is active, off until game starts
 var hit = false; //if the block has been hit
 var blockSpeed = 1; //speed the blocks move, in px/ms
 var speed = 3; //speed of block in px/ms
-var y = 0; //position of gamepiece vertically
-var x = 0; //position of gp horizontally
+var y = 5; //position of gamepiece vertically
+var x = 5; //position of gp horizontally
 var mapY = 0; //mapX
 var mapX = 0; //mapY
 var movement = false; //if movement is allowed
@@ -109,6 +108,7 @@ function isColliding(r1, r2) { //The same as isTouching(), but returns a number 
 
 function update() { //runs every ten milliseconds
 	if (movement) {
+		 //Prevent The Gampiece from Moving off the edge of the screens
 		if (gp.offsetTop + gp.offsetHeight > window.innerHeight) {
 			backSpeed = 0;
 		}
@@ -118,9 +118,36 @@ function update() { //runs every ten milliseconds
 		if (gp.offsetLeft < 0) {
 			leftSpeed = 0;
 		}
-		if (gp.offsetLeft + gp.offsetWidth > window.innerWidth) { //these ifs check if the gamepiece is touching the sides and stops it
+		if (gp.offsetLeft + gp.offsetWidth > window.innerWidth) {
 			rightSpeed = 0;
 		}
+		//If the gampiece is near the edge of the screen and the map is not scrolled to the maximum, stop the gamepiece and start scrolling the map instead
+		if (gp.offsetTop + gp.offsetHeight > window.innerHeight - 100 && mapY < MAP_MAX_Y) {
+			backSpeedMap = speed;
+			y += speed;
+		} else {
+			backSpeedMap = 0;
+		}
+		if (gp.offsetTop < 100 && mapY > MAP_MIN_Y) {
+			forwardSpeedMap = speed;
+			y -= speed;
+		} else {
+			forwardSpeedMap = 0;
+		}
+
+		if (gp.offsetLeft < 100 && mapX < MAP_MAX_X) {
+			leftSpeedMap = speed;
+			x += speed;
+		} else {
+			leftSpeedMap = 0;
+		}
+		if (gp.offsetLeft + gp.offsetWidth > window.innerWidth - 100 && mapX > MAP_MIN_X) {
+			rightSpeedMap = speed;
+			x -= speed;
+		} else {
+			rightSpeedMap = 0;
+		}
+		//Idk if these actually do anything in most cases because the if statements above already check the max, but if the map is at the max stop it
 		if (mapY > MAP_MAX_Y) {
 			backSpeedMap = 0;
 		}
@@ -136,7 +163,7 @@ function update() { //runs every ten milliseconds
 		y += forwardSpeed - backSpeed;
 		x += rightSpeed - leftSpeed; //moves the block's position (x and y) by the movement speed in each direction
 		mapY -= forwardSpeedMap - backSpeedMap;
-		mapX -= rightSpeedMap - leftSpeedMap; //moves the block's position (x and y) by the movement speed in each direction
+		mapX -= rightSpeedMap - leftSpeedMap; //moves the map's position (x and y) by the movement speed in each direction
 
 
 		gp.style.bottom = y + 'px';
@@ -252,8 +279,8 @@ function update() { //runs every ten milliseconds
 			time = 60000;
 			inclass = false;
 			leaveMulberries();
-			x = 0;
-			y = 0;
+			x = 5;
+			y = 5;
 			mapX = 0;
 			mapY = 0;
 			movement = false;
@@ -274,33 +301,33 @@ setInterval(update, 10); //run the update function from earlier every ten millis
 
 document.addEventListener("keydown", function (event) { // runs when any key is down (not released) when the key is pressed, set the speed to 1 px/ms
 	if (event.key == 's') { // if 's' is pressed, doesnt work on some browsers (!), maybe switch to event.which in future update?
-		if (y > 100 || mapY > MAP_MAX_Y) {
+		//if (y > 100 || mapY > MAP_MAX_Y) {
 			backSpeed = speed;
-		} else {
-			backSpeedMap = speed;
-		}
+		//} else {
+			//backSpeedMap = speed;
+		//}
 	}
 	if (event.key == 'w') { // same as 's'	
-		if (y < window.innerHeight - 100 || mapY < MAP_MIN_Y) {
+		//if (y < window.innerHeight - 100 || mapY < MAP_MIN_Y) {
 			forwardSpeed = speed;
-		} else {
-			forwardSpeedMap = speed;
-		}
+		//} else {
+			//forwardSpeedMap = speed;
+		//}
 	}
 	if (event.key == 'a') { // same as 's'
-		if (x > 100 || mapX > MAP_MAX_X) {
+		//if (x > 100 || mapX > MAP_MAX_X) {
 			leftSpeed = speed;
-		} else {
-			leftSpeedMap = speed;
-		}
+		//} else {
+			//leftSpeedMap = speed;
+		//}
 
 	}
 	if (event.key == 'd') { // same as 's'	
-		if (x < window.innerWidth - 100 || mapX < MAP_MIN_X) {
+		//if (x < window.innerWidth - 100 || mapX < MAP_MIN_X) {
 			rightSpeed = speed;
-		} else {
-			rightSpeedMap = speed;
-		}
+		//} else {
+			//rightSpeedMap = speed;
+		//}
 	}
 });
 
@@ -351,7 +378,7 @@ function startGame() {
 			grade = 100;
 			days = 3;
 			day = 1;
-			if(Math.floor(Math.random() * 100) < 2){
+			if (Math.floor(Math.random() * 100) < 2) {
 				earthquake();
 			}
 		}, 1000)
@@ -431,8 +458,8 @@ function getSavaged(penalty) {
 		if (partnership) {
 			money += 5;
 		}
-		x = 0;
-		y = 0;
+		x = 5;
+		y = 5;
 		mapX = 0;
 		mapY = 0;
 		if (Math.floor(Math.random() * 2) == 0) {
@@ -469,7 +496,7 @@ function getSavaged(penalty) {
 					time = 30000;
 				}, 1000)
 			}, 4000);
-		}	
+		}
 	}
 	document.getElementById("savageroom").style.display = "none";
 }
@@ -636,7 +663,7 @@ function tutorial() {
 	startGame();
 	inTutorial = true;
 	document.getElementById("mulberries").classList.add("tutorialElement");
-	notify("<h2>Welcome to Passing Period</h2><br>You are currently in a descanso, an in-class break. You can use this time to prepare for Passing Period, how about heading to Mulberry's to pick up some Butterfingers and Dr. Pepper. You can find Mulberry's in the top right corner of the map. Use W, A, S, and D to move your game piece around.<br><b>Goal: Get to Mulberry's and purchase a Butterfinger.</b>");
+	notify("<h2>Welcome to Passing Period</h2><br>You are currently in a descanso, an in-class break. You can use this time to prepare for Passing Period, how about heading to Mulberry's to pick up some Butterfingers and Dr. Pepper. You can find Mulberry's in the top right corner of the map. Use <key>W</key>, <key>A</key>, <key>S</key>, and <key>D</key> to move your game piece around.<br><b>Goal: Get to Mulberry's and purchase a Butterfinger.</b>");
 }
 
 function test() {
@@ -645,13 +672,27 @@ function test() {
 
 function earthquake() {
 	document.getElementById('mapContainer').classList.add('earthquake');
-	for(i = 0; i < document.getElementsByClassName("obstacle").length; i++){
+	for (i = 0; i < document.getElementsByClassName("obstacle").length; i++) {
 		document.getElementsByClassName('obstacle')[i].style.bottom = parseInt(document.getElementsByClassName('obstacle')[i].style.bottom) - (Math.floor(Math.random() * 20) - 10) + "vh";
 		document.getElementsByClassName('obstacle')[i].style.left = parseInt(document.getElementsByClassName('obstacle')[i].style.left) - (Math.floor(Math.random() * 20) - 10) + "vw";
 	}
-	setTimeout(function() {
+	setTimeout(function () {
 		document.getElementById('mapContainer').classList.remove('earthquake');
 		notify('<h1>An Eartquake Occured</h1><br>This has a 2% chance of happening at the beginning of any game. Many objects on the map have moved, so you may need to find different paths to normal locations.<br><button onclick="closeNotification()">Continue Playing</button><button onclick="window.location.reload()">Start New Game</button>');
 	}, 2000);
 	document.getElementById('savage').style.left = "85vw";
+}
+
+function simulateKeyDown(key) {
+	var evt = new KeyboardEvent('keydown', {
+		'key': key
+	});
+	document.dispatchEvent(evt);
+}
+
+function simulateKeyUp(key) {
+	var evt = new KeyboardEvent('keyup', {
+		'key': key
+	});
+	document.dispatchEvent(evt);
 }

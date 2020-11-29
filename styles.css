@@ -472,6 +472,7 @@ input:checked + .slider:before {
 	width: 100vw;
 	height: 100vh;
 	background: url('images/savageroom.png') white;
+	background-size: cover;
 	display: none;
 }
 
@@ -503,6 +504,8 @@ input:checked + .slider:before {
 	height: 100vh;
 	background: white;
 	display: none;
+	background: url("https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fvignette4.wikia.nocookie.net%2Ftreasure-planet%2Fimages%2F6%2F61%2FFull_image_placeholder.jpg%2Frevision%2Flatest%3Fcb%3D20130709151342&f=1&nofb=1");
+	background-size: cover;
 }
 
 #jackinnisInvite {
@@ -513,6 +516,8 @@ input:checked + .slider:before {
 	height: 100vh;
 	background: white;
 	display: none;
+	background: url("https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fvignette4.wikia.nocookie.net%2Ftreasure-planet%2Fimages%2F6%2F61%2FFull_image_placeholder.jpg%2Frevision%2Flatest%3Fcb%3D20130709151342&f=1&nofb=1");
+	background-size: cover;
 }
 
 .actionButtonsContainer {
@@ -524,12 +529,36 @@ input:checked + .slider:before {
 	height: 20vh;
 	text-align: center;
 	z-index: 1;
-	background: purple;
+	background: rgba(0, 0, 0, .4);
+    backdrop-filter: blur(15px);
 }
 
 .actionButtonsContainer button {
 	height: 15vh;
+	width: 15vh;
 	margin: 10px;
+	border: none;
+	border-radius: 5px;
+	background: rgba(255, 255, 255, .2);
+	color: white;
+	font-weight: 14pt;
+	transition-duration: .5s;
+}
+
+.actionButtonsContainer button:hover {
+	background: rgba(255, 255, 255, .4);
+}
+
+.locationDiv {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	background: rgba(0, 0, 0, .4);
+    backdrop-filter: blur(15px);
+	border-bottom-right-radius: 5px;
+	color: white;
+	padding-left: 15px;
+	padding-right: 15px;
 }
 
 #savagepicture {
@@ -786,4 +815,38 @@ input:checked + .slider:before {
 	font-family: 'Anton', sans-serif;
 	font-size: 4em;
 	letter-spacing: 2px;
+}
+
+#jackinnisInvite h1 {
+	position: absolute;
+	color: white;
+	right: 5vw;
+	top: 30vh;
+	max-width: 50vw;
+	border-radius: 15px;
+	background: rgba(0, 0, 0, .4);
+	backdrop-filter: blur(15px);
+	padding: 2vw;
+}
+
+#slowkidsactions h1 {
+	position: absolute;
+	color: white;
+	right: 5vw;
+	top: 30vh;
+	max-width: 50vw;
+	border-radius: 15px;
+	background: rgba(0, 0, 0, .4);
+	backdrop-filter: blur(15px);
+	padding: 2vw;
+}
+
+@font-face {
+  font-family: keyboard;
+  src: url("fonts/keyboard.otf");
+}
+
+key {
+	font-family: keyboard;
+	font-size: xx-large;
 }
