@@ -561,3 +561,10 @@ key {
 	font-family: keyboard;
 	font-size: xx-large;
 }
+
+#slowkids {
+	position: absolute;
+	width: 70vw;
+	bottom: 0px;
+	left: 0px;
+}

@@ -254,6 +254,8 @@ function update() { //runs every ten milliseconds
 			time = 60000;
 			inclass = false;
 			leaveMulberries();
+			leaveBathroom();
+			noJack();
 			x = 5;
 			y = MAP_SCROLL_BUFFER + 5;
 			mapX = 0;
