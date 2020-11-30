@@ -83,7 +83,7 @@ function isColliding(r1, r2) { //The same as isTouching(), but returns a number 
 
 function update() { //runs every ten milliseconds
 	if (movement) {
-		 //Prevent The Gampiece from Moving off the edge of the screen
+		//Prevent The Gampiece from Moving off the edge of the screen
 		if (gp.offsetTop + gp.offsetHeight > window.innerHeight) {
 			backSpeed = 0;
 		}
@@ -278,16 +278,20 @@ setInterval(update, 10); //run the update function from earlier every ten millis
 
 document.addEventListener("keydown", function (event) { // runs when any key is down (not released) when the key is pressed, set the speed to 1 px/ms
 	if (event.key == 's') { // if 's' is pressed, doesnt work on some browsers (!), maybe switch to event.which in future update?
-			backSpeed = speed;
+		backSpeed = speed;
+		gp.style.transform = "rotate(0deg)";
 	}
 	if (event.key == 'w') { // same as 's'	
-			forwardSpeed = speed;
+		forwardSpeed = speed;
+		gp.style.transform = "rotate(180deg)";
 	}
 	if (event.key == 'a') { // same as 's'
-			leftSpeed = speed;
+		leftSpeed = speed;
+		gp.style.transform = "rotate(90deg)";
 	}
 	if (event.key == 'd') { // same as 's'	
-			rightSpeed = speed;
+		rightSpeed = speed;
+		gp.style.transform = "rotate(270deg)";
 	}
 });
 

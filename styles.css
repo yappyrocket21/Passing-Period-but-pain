@@ -1,14 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
 
 #gamepiece {
-	background: blue;
+	background: url(images/player.svg);
 	background-size: cover;
 	background-position: 2px 0px;
 	width: 2.5vw;
 	height: 2.5vw;
 	position: absolute;
 	z-index: -1;
-	border-radius: 15px;
+	transition: ease .2s;
+	transition-property: transform;
 }
 
 #mapContainer {
