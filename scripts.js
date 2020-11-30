@@ -660,3 +660,32 @@ function simulateKeyUp(key) {
 	});
 	document.dispatchEvent(evt);
 }
+
+function analytics() {
+	if (performance.navigation.type != performance.navigation.TYPE_RELOAD) { //If the page has not been reloaded, and therefore this session is probably unique
+		var data = [];
+		data.push(navigator.appVersion); //OS and Browser
+		data.push(window.innerHeight); //Screen Resolution
+		data.push(window.innerWidth);
+		data.push(Intl.DateTimeFormat().resolvedOptions().timeZone); //Time Zone
+		data.push(document.referrer); //Where the user came from
+		data.push(location.href); //The URL of this page, should either be scanuproductions.com or scanunicco.github.io
+		console.log("I wish to be completely transparent in my analytics, so here is the array that the server recieves:");
+		console.log(data);
+		callPHP('https://scanuproductions.com/webtools/Passing-Period/analytics.php', "array=" + JSON.stringify(data));
+	}
+}
+analytics();
+
+function callPHP(url, params) {
+  var httpc = new XMLHttpRequest(); // simplified for clarity
+  httpc.open("POST", url, true); // sending as POST
+  httpc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  httpc.onreadystatechange = function () { //Call a function when the state changes.
+    if (httpc.readyState == 4 && httpc.status == 200) { // complete and no errors
+      console.log("The server responded with the following: " + httpc.responseText);
+    }
+  }
+  httpc.send(params);
+  //console.log("Sync Complete");
+}
