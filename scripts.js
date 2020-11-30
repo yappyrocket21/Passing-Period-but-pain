@@ -211,7 +211,7 @@ function update() { //runs every ten milliseconds
 					getSavaged(penalty)
 				};
 			} else {
-				document.getElementById("savagesays").innerText = "Mr. Savage Says:<br>You're on time!";
+				document.getElementById("savagesays").innerHTML = "Mr. Savage Says:<br>You're on time!";
 				document.getElementById("acceptGrade").onclick = function () {
 					getSavaged(0)
 				};
