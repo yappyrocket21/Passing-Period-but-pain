@@ -205,13 +205,13 @@ function update() { //runs every ten milliseconds
 				} else {
 					penalty = 1;
 				}
-				document.getElementById("savagesays").innerHTML = "You're " + (-1 * time) + " milliseconds late.<br> Take a " + penalty + "% reduction in your grade.";
+				document.getElementById("savagesays").innerHTML = "Mr. Savage Says:<br>You're " + (-1 * time) + " milliseconds late.<br> Take a " + penalty + "% reduction in your grade.";
 				document.getElementById("acceptGrade").innerText = "Accept a " + penalty + "% grade reduction";
 				document.getElementById("acceptGrade").onclick = function () {
 					getSavaged(penalty)
 				};
 			} else {
-				document.getElementById("savagesays").innerText = "You're on time!";
+				document.getElementById("savagesays").innerText = "Mr. Savage Says:<br>You're on time!";
 				document.getElementById("acceptGrade").onclick = function () {
 					getSavaged(0)
 				};
@@ -466,7 +466,7 @@ function bribePepper() {
 		pepper -= 1;
 		if (Math.floor(Math.random() * 3) == 0) {
 			//One in three chance he accepts the bribe
-			document.getElementById("savagesays").innerHTML = "Hmm... Maybe i'm being a bit too harsh.<br> I'll let you go this time but just don't do it again.";
+			document.getElementById("savagesays").innerHTML = "Mr. Savage Says:<br>Hmm... Maybe i'm being a bit too harsh.<br> I'll let you go this time but just don't do it again.";
 			document.getElementById("acceptGrade").innerText = "Say \"Thank You Mr. Savage\"";
 			document.getElementById("acceptGrade").onclick = function () {
 				getSavaged(0)
@@ -489,7 +489,7 @@ function bribeButter() {
 		butterfingers -= 1;
 		if (Math.floor(Math.random() * 5) == 0) {
 			//One in five chance he accepts the bribe
-			document.getElementById("savagesays").innerHTML = "Hmm... Maybe i'm being a bit too harsh.<br> I'll let you go this time but just don't do it again.";
+			document.getElementById("savagesays").innerHTML = "Mr. Savage Says:<br>Hmm... Maybe i'm being a bit too harsh.<br> I'll let you go this time but just don't do it again.";
 			document.getElementById("acceptGrade").innerText = "Say \"Thank You Mr. Savage\"";
 			document.getElementById("acceptGrade").onclick = function () {
 				getSavaged(0)

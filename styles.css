@@ -184,19 +184,6 @@ body {
 	display: none;
 }
 
-#savageroom h2 {
-	position: absolute;
-	text-align: center;
-	bottom: calc(20vh + 366px);
-	left: 100px;
-	z-index: 1;
-}
-
-#savageroom h1 {
-	color: white;
-	text-shadow: 2px 2px 2px rgba(0, 0, 0, .7)
-}
-
 #savagebubble {
 	transform: scaleX(-2.4) scaleY(-1);
 	position: absolute;
@@ -275,8 +262,8 @@ body {
 #savagepicture {
 	position: absolute;
 	bottom: calc(20vh + 20px);
-	left: 151px;
-	width: 979px;
+    left: 10vw;
+    height: 75vh;
 }
 
 #sectionsDivider {
@@ -528,7 +515,7 @@ body {
 	letter-spacing: 2px;
 }
 
-#jackinnisInvite h1 {
+.actionScreenInfoPopup {
 	position: absolute;
 	color: white;
 	right: 5vw;
@@ -538,19 +525,9 @@ body {
 	background: rgba(0, 0, 0, .4);
 	backdrop-filter: blur(15px);
 	padding: 2vw;
+	text-align: center;
 }
 
-#slowkidsactions h1 {
-	position: absolute;
-	color: white;
-	right: 5vw;
-	top: 30vh;
-	max-width: 50vw;
-	border-radius: 15px;
-	background: rgba(0, 0, 0, .4);
-	backdrop-filter: blur(15px);
-	padding: 2vw;
-}
 
 @font-face {
   font-family: keyboard;
