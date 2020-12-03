@@ -2,12 +2,13 @@
 
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-	<title>Goose Chase Engine | Scanu Productions</title>
+	<title>Passing Period | Scanu Productions</title>
 	<link rel="icon" type="image/png" href="https://scanuproductions.com/images/ScanuProdIcon.png">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="https://scanuproductions.com/webtools/menu/dropdown.css">
 	<link rel="stylesheet" type="text/css" href="styles.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 </head>
 
 <body id="game">
@@ -39,18 +40,28 @@
 		</div>
 		<div id="schoologyBackground">
 			<div id="gradeContainer">
-			
+
 			</div>
 			<h2>This activity is currently accepting submissions</h2>
 			<button class="startButton" onclick="startGame()">Start Now</button>
 			<p>You may make as many attempts as you like.</p><br><br><a href="#" onclick="tutorial()">Run Tutorial</a>
 		</div>
-		<table id="results"><tr><th>Money</th><th>Popularity</th><th>Honors Chemistry Grade</th><th>Butterfingers</th><th>Dr. Pepper</th><th>Final Grade</th></tr>
-    </table>
+		<table id="results">
+			<tr>
+				<th>Money</th>
+				<th>Popularity</th>
+				<th>Honors Chemistry Grade</th>
+				<th>Butterfingers</th>
+				<th>Dr. Pepper</th>
+				<th>Final Grade</th>
+			</tr>
+		</table>
 		<div id="linksContainer"><a href="#" onclick="notify(WELCOME_MESSAGE)">Show Welcome Message</a> | <a href="#" onclick="notify(CREDITS_MESSAGE)">Show Credits</a> | <a href="#" onclick="notify(DATA_MESSAGE)">Data Collection Notice</a></div>
 	</div>
 	<div id="storefront">
-		<div class="locationDiv"><h1>Mulberry's Market</h1></div>
+		<div class="locationDiv">
+			<h1>Mulberry's Market</h1>
+		</div>
 		<div class="actionButtonsContainer">
 			<button onclick="buyPepper()">Purchase Dr. Pepper $5</button>
 			<button onclick="buyButter()">Purchase Butterfinger $3</button>
@@ -58,7 +69,9 @@
 		</div>
 	</div>
 	<div id="savageroom">
-		<div class="locationDiv"><h1>Mr. Savage's Room</h1></div>
+		<div class="locationDiv">
+			<h1>Mr. Savage's Room</h1>
+		</div>
 		<image id="savagepicture" src="images/savage.png"></image>
 		<h1 class="actionScreenInfoPopup" id="savagesays">Mr Savage Says: </h1>
 		<div class="actionButtonsContainer">
@@ -68,9 +81,11 @@
 		</div>
 	</div>
 	<div id="slowkidsactions">
-		<div class="locationDiv"><h1>The Stairs / Ramp</h1></div>
+		<div class="locationDiv">
+			<h1>The Stairs / Ramp</h1>
+		</div>
 		<img id="slowkids" src="images/slowkids.png">
-		<h1  class="actionScreenInfoPopup">You're stuck behind slow kids</h1>
+		<h1 class="actionScreenInfoPopup">You're stuck behind slow kids</h1>
 		<div class="actionButtonsContainer">
 			<button onclick="pushThrough()">Push Through Them (-5% Popularity)</button>
 			<button onclick="sellButter()">Sell them a Butterfinger (+ 4 dollars, + 1% popularity, -35s)</button>
@@ -78,7 +93,9 @@
 		</div>
 	</div>
 	<div id="survivalofthefittest">
-		<div class="locationDiv"><h1>The Bathroom</h1></div>
+		<div class="locationDiv">
+			<h1>The Bathroom</h1>
+		</div>
 		<div class="actionButtonsContainer">
 			<button onclick="naturalSelection()">Vape (+10% Popularity, 10% chance of being suspended, -20s)</button>
 			<button onclick="sellPepper()">Sell a Dr. Pepper (+ 8 dollars, + 1% popularity, -15s)</button>
@@ -86,8 +103,10 @@
 		</div>
 	</div>
 	<div id="jackinnisInvite" style="background: ">
-		<div class="locationDiv"><h1>The Hallway</h1></div>
-		<h1  class="actionScreenInfoPopup">Jack McInnis would like to form a strategic partnership.</h1>
+		<div class="locationDiv">
+			<h1>The Hallway</h1>
+		</div>
+		<h1 class="actionScreenInfoPopup">Jack McInnis would like to form a strategic partnership.</h1>
 		<img id="jackimage" src="images/jackanon2.png">
 		<div class="actionButtonsContainer">
 			<button onclick="createPartnership()">Yes (-10% Popularity, -1 Butterfinger, +$5 Per Day, -10s)</button>
@@ -100,7 +119,12 @@
 	</div>
 	<div id="gamepiece">
 		<br>
-
+	</div>
+	<div id="mobileControls">
+		<button ontouchstart="simulateKeyDown('w')" ontouchend="simulateKeyUp('w')" style="grid-column: 2; grid-row: 1;">Up</button>
+		<button ontouchstart="simulateKeyDown('a')" ontouchend="simulateKeyUp('a')" style="grid-column: 1; grid-row: 2;">Left</button>
+		<button ontouchstart="simulateKeyDown('s')" ontouchend="simulateKeyUp('s')" style="grid-column: 2; grid-row: 2;">Down</button>
+		<button ontouchstart="simulateKeyDown('d')" ontouchend="simulateKeyUp('d')" style="grid-column: 3; grid-row: 2;">Right</button>
 	</div>
 	<div id="mapContainer">
 		<div class="obstacle" style="bottom: 70vh; left: 0px; width: 40vw; height: 40vh; background: url('images/stem.svg#svgView(preserveAspectRatio(none))'); background-size: 100% 100%; background-repeat: no-repeat"></div>

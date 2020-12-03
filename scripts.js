@@ -42,10 +42,23 @@ var canBeSlowed = true; //Wether or not the player can get stuck behind slow kid
 var partnership = false; //Wether or not the player has formed a partnership with Jack
 var never = false; //Wether or not the player has said "never" to jack
 var inTutorial = false;
+var isMobile = navigator.appVersion.includes("Android");
 
 //If the user has previously toggled the local highscore switch, set hsLocal to true
 if (localStorage.getItem('useHSL') == "true") {
 	hsLocal = true;
+}
+
+if(isMobile){
+	document.getElementById("mobileControls").style.display = "grid";
+	document.getElementById("popup").style.left = "0px";
+	document.getElementById("popup").style.top = "0px";
+	document.getElementById("popup").style.width = "100vw";
+	document.getElementById("popup").style.height = "100vh";
+	document.getElementById("popup").style.border = "none";
+	document.getElementById("popup").style.padding = "0px";
+	document.getElementById("popup").style.paddingTop = "20px";
+	document.getElementById("popup").style.borderRadius = "0px";
 }
 
 //move to start position and set number of lives to 3 and the score to 0000
